@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from utills import ImagePlotter
 
+from main import CUDA
+
 
 class DecoderLayer(nn.Module):
     """
@@ -43,6 +45,8 @@ class DecoderLayer(nn.Module):
         # print("3---------------",max_class_indices.size())
         # print(max_class_indices)
         mask = torch.eye(10)
+        if CUDA:
+            mask = mask.cuda()
         # print("4---------------",mask.size())
         mask = mask.index_select(dim=0, index=max_class_indices.squeeze(1).data)
         # print(mask)

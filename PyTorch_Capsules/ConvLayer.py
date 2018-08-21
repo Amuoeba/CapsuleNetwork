@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from main import CUDA
+
 class ConvLayer(nn.Module):
     """
     ConvLayer is a clasic convolution layer

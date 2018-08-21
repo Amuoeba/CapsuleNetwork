@@ -5,6 +5,8 @@ from ConvLayer import ConvLayer
 from CapsuleLayer import CapsuleLayer
 from DecoderLayer import DecoderLayer
 
+from main import CUDA
+
 
 
 class CapsuleNet(nn.Module):

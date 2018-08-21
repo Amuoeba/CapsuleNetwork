@@ -12,6 +12,11 @@ import time
 # print("Size of the DATA:",a[0].size())
 # plot_images_separately(a[0][:10, 0].data.cpu().numpy())
 
+
+# CUDA
+CUDA = False
+
+# Plotter for ploting the raw images and reconstructions
 plotter = ImagePlotter()
 
 # Instanciating the network
@@ -43,6 +48,10 @@ for epoch in range(no_epochs):
         target_batch = data[1]      
 
         lable = torch.eye(10).index_select(dim=0,index=target_batch)        
+
+        if CUDA:
+            image_batch = image_batch.cuda()
+            lable = lable.cuda()
 
         optimizer.zero_grad()
 
@@ -83,6 +92,10 @@ with torch.no_grad():
         target_batch = data[1]
 
         lable = torch.eye(10).index_select(dim=0,index=target_batch)
+
+        if CUDA:
+            target_batch = target_batch.cuda()
+            lable = lable.cuda()
 
         out, decoded, masked = caps_net(image_batch)
 
