@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from utills import ImagePlotter
 
-from main import CUDA
+# from main import CUDA
 
 
 class DecoderLayer(nn.Module):
@@ -22,8 +22,9 @@ class DecoderLayer(nn.Module):
             a tensor of masks that represents what was the result 
             of classification
     """
-    def __init__(self,l1_in = 160, l1_out=512, l2_out = 1024, l3_out = 784):
+    def __init__(self,l1_in = 160, l1_out=512, l2_out = 1024, l3_out = 784,use_cuda=False):
         super().__init__()
+        self.use_cuda = use_cuda
         self.decoder_layers = nn.Sequential(
             nn.Linear(l1_in,l1_out),
             nn.ReLU(inplace=True),
@@ -45,7 +46,7 @@ class DecoderLayer(nn.Module):
         # print("3---------------",max_class_indices.size())
         # print(max_class_indices)
         mask = torch.eye(10)
-        if CUDA:
+        if self.use_cuda:
             mask = mask.cuda()
         # print("4---------------",mask.size())
         mask = mask.index_select(dim=0, index=max_class_indices.squeeze(1).data)

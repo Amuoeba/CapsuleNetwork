@@ -5,17 +5,17 @@ from ConvLayer import ConvLayer
 from CapsuleLayer import CapsuleLayer
 from DecoderLayer import DecoderLayer
 
-from main import CUDA
+# from main import CUDA
 
 
 
 class CapsuleNet(nn.Module):
-    def __init__(self):
+    def __init__(self,use_cuda=False):
         super().__init__()
         self.firstConv = ConvLayer()
         self.primeryCapsules = CapsuleLayer()
-        self.secondaryCapsules = CapsuleLayer(routing=True,routing_type="Dinamic")
-        self.decoderLayer = DecoderLayer()
+        self.secondaryCapsules = CapsuleLayer(routing=True,routing_type="Dinamic",use_cuda=use_cuda)
+        self.decoderLayer = DecoderLayer(use_cuda=use_cuda)
 
         self.mseLoss = nn.MSELoss()
         

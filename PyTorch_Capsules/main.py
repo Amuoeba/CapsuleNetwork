@@ -21,6 +21,9 @@ plotter = ImagePlotter()
 
 # Instanciating the network
 caps_net = CapsuleNet()
+if CUDA:
+    caps_net.cuda()
+
 model_parameters = filter(lambda p: p.requires_grad, caps_net.parameters())
 params = sum([np.prod(p.size()) for p in model_parameters])
 print("No. parameters: ",params)

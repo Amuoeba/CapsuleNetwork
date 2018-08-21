@@ -2,14 +2,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from main import CUDA
-
+# from main import CUDA
 
 class CapsuleLayer(nn.Module):
-    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations = 3, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ):
+    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations = 3, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
         super().__init__()
         self.forward_type = None
         self.W = None
+        self.use_cuda = use_cuda
 
         #Check whether routing should be conducted or not
         if not routing:
@@ -33,15 +33,15 @@ class CapsuleLayer(nn.Module):
 
                 assert u.size() == torch.Size([x.size(0),1152,8])
                 return self.squash(u)
-from main import CUDA
-from main import CUDA
-from main import CUDA
-from main import CUDA
-from main import CUDA
-from main import CUDA
-from main import CUDA
-from main import CUDA
-from main import CUDA
+
+            self.forward_type = forward_no_route
+
+
+        elif routing:
+            if routing_type == "Dinamic":
+                numPrevCaps = numPrevCaps
+                prevCapsDim = prevCapsDim
+                numNextCaps = numNextCaps
                 nextCapsDim = nextCapsDim
 
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
@@ -55,7 +55,7 @@ from main import CUDA
                     
                     b_ij = torch.zeros(1,numPrevCaps,numNextCaps,1,requires_grad=True)
                     
-                    if CUDA:
+                    if self.use_cuda:
                         b_ij.cuda()
 
                     for i in range(num_itterations):
