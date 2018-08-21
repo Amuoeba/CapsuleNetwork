@@ -1,0 +1,9 @@
+/data
+/PyTorchTest/data
+/PyTorchTest/faces
+/PyTorchTest/.ipynb_checkpoints
+/PyTorch_Capsules/__pycache__
+/PyTorch_Capsules/.vscode
+/PyTorch_Capsules/Data
+/PyTorch_Capsules/.pylintrc
+
