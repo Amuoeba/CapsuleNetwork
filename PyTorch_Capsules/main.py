@@ -14,7 +14,7 @@ import time
 
 
 # CUDA
-CUDA = False
+CUDA = True
 
 # Plotter for ploting the raw images and reconstructions
 plotter = ImagePlotter()

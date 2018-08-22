@@ -2,6 +2,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+plt.switch_backend('agg')
+
 # from main import CUDA
 
 
