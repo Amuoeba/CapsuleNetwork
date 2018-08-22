@@ -10,6 +10,7 @@ class CapsuleLayer(nn.Module):
         self.forward_type = None
         self.W = None
         self.use_cuda = use_cuda
+        print("CUDA:",self.use_cuda)
 
         #Check whether routing should be conducted or not
         if not routing:
