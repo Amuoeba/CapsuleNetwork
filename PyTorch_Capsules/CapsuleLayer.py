@@ -84,6 +84,8 @@ class CapsuleLayer(nn.Module):
                             if self.use_cuda:
                                 a_ij = a_ij.cuda()
                             b_ij = b_ij + a_ij
+                            if self.use_cuda:
+                                b_ij = b_ij.cuda()
 
                     out = v_j.squeeze(1)
                     return out       
