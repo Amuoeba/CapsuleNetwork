@@ -76,7 +76,7 @@ for epoch in range(no_epochs):
             # print("Decoded size",decoded.size())
             # print("Train accuracy:",sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size))
             # print("Num examples:",decoded[:10,0].size())
-            to_plot = decoded[:10,0].detach().numpy()            
+            to_plot = decoded[:10,0].cpu().detach().numpy()            
             plotter.plot_images_separately(to_plot,save=True)
 
 
