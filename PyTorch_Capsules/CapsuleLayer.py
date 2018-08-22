@@ -72,6 +72,8 @@ class CapsuleLayer(nn.Module):
                             s_j = s_j.cuda()
 
                         v_j = self.squash(s_j)
+                        if self.use_cuda:
+                            v_j = v_j.cuda()
 
 
 
