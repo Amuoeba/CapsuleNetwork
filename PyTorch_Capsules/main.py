@@ -20,7 +20,7 @@ CUDA = True
 plotter = ImagePlotter()
 
 # Instanciating the network
-caps_net = CapsuleNet()
+caps_net = CapsuleNet(use_cuda=CUDA)
 if CUDA:
     caps_net.cuda()
 
