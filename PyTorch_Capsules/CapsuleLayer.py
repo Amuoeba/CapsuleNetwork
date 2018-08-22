@@ -83,6 +83,8 @@ class CapsuleLayer(nn.Module):
                             print("INSIDE CUDA:",self.use_cuda)
                             if self.use_cuda:
                                 a_ij = a_ij.cuda()
+                            print("A",a_ij.type())
+                            print("B",b_ij.type())
                             b_ij = b_ij + a_ij
                             if self.use_cuda:
                                 b_ij = b_ij.cuda()
