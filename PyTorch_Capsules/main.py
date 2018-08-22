@@ -30,7 +30,7 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 1
+no_epochs = 2
 batch_size = 50
 
 # Instantiating the train loader
@@ -45,7 +45,7 @@ for epoch in range(no_epochs):
     
     train_loss = 0
     print("Epoch:",epoch)
-    for batch_number, data in islice(enumerate(mnist.train_loader),100):
+    for batch_number, data in islice(enumerate(mnist.train_loader),1200):
 
         image_batch = data[0]
         target_batch = data[1]      
@@ -97,7 +97,7 @@ with torch.no_grad():
         lable = torch.eye(10).index_select(dim=0,index=target_batch)
 
         if CUDA:
-            target_batch = target_batch.cuda()
+            image_batch = image_batch.cuda()
             lable = lable.cuda()
 
         out, decoded, masked = caps_net(image_batch)
