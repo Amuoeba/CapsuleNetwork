@@ -78,6 +78,7 @@ class CapsuleLayer(nn.Module):
                         if i < num_itterations - 1:
                             a_ij = torch.matmul(prediction.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
                             a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
+                            print("INSIDE CUDA:",self.use_cuda)
                             if self.use_cuda:
                                 a_ij = a_ij.cuda()
                             b_ij = b_ij + a_ij
