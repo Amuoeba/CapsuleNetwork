@@ -60,11 +60,18 @@ class CapsuleLayer(nn.Module):
 
                     for i in range(num_itterations):
                         c_ij = F.softmax(b_ij,dim=1)
+                        if use_cuda:
+                            c_ij = c_ij.cuda()
+
                         c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
 
+
                         s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
+                        if self.use_cuda:
+                            s_j = s_j.cuda()
 
                         v_j = self.squash(s_j)
+
 
                         if i < num_itterations - 1:
                             a_ij = torch.matmul(prediction.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
