@@ -17,7 +17,7 @@ class ImagePlotter():
         self.current = 0
         self.name = name    
 
-    def plot_images_separately(self,images,save=False,name = self.name):
+    def plot_images_separately(self,images,save=False,name="default"):
         "Plot the six MNIST images separately."
         fig = plt.figure()
         

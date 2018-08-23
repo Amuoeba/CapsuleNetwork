@@ -45,7 +45,7 @@ for epoch in range(no_epochs):
     
     train_loss = 0
     print("Epoch:",epoch)
-    for batch_number, data in islice(enumerate(mnist.train_loader),1200):
+    for batch_number, data in enumerate(mnist.train_loader): #islice(generator,to,step)
 
         image_batch = data[0]
         target_batch = data[1]      
