@@ -138,7 +138,8 @@ print("################################")
 
 
 # Create and save plots in the plots foldier
-
+cols = ["epoch","batch"]
+train_data[cols] = train_data[cols].applymap(np.int64)
 # print(train_data)
 
 accuracy_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data,kind="line")
