@@ -131,5 +131,7 @@ with torch.no_grad():
 
 # Create and save plots in the plots foldier
 
+print(train_data)
+
 train_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data,kind="line")
 train_graph.savefig("./plots/train_plot.png")
