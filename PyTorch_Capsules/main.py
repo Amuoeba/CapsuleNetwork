@@ -88,7 +88,7 @@ for epoch in range(no_epochs):
         print("Train accuracy:", train_accuracy)
 
         cur_df = pd.DataFrame({"epoch":[epoch],"batch":[batch_number],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]})
-        train_data.append(cur_df)
+        train_data = train_data.append(cur_df)
 
         
         if batch_number % 10 == 0:
