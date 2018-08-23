@@ -39,7 +39,7 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 30
+no_epochs = 1
 batch_size = 100
 
 # Instantiating the train loader
