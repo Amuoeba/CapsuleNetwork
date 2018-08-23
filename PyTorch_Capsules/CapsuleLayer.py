@@ -10,7 +10,7 @@ class CapsuleLayer(nn.Module):
         self.forward_type = None
         self.W = None
         self.use_cuda = use_cuda
-        print("CUDA:",self.use_cuda)
+        # print("CUDA:",self.use_cuda)
 
         #Check whether routing should be conducted or not
         if not routing:
@@ -27,9 +27,9 @@ class CapsuleLayer(nn.Module):
             #   - Transform the tensor so that we only have individual 8D capsules (32*6*6 = 1152) in each batch --> [batch,1152,8]
             def forward_no_route(self,x):
                 u = [capsule(x) for capsule in self.capsules]
-                print("U2 size:",u[0].size())
+                # print("U2 size:",u[0].size())
                 u = torch.stack(u,4)
-                print("U2 size:",u.size())
+                # print("U2 size:",u.size())
                 u = u.view(x.size(0),32*6*6,-1)
 
                 assert u.size() == torch.Size([x.size(0),1152,8])
@@ -80,11 +80,11 @@ class CapsuleLayer(nn.Module):
                         if i < num_itterations - 1:
                             a_ij = torch.matmul(prediction.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
                             a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
-                            print("INSIDE CUDA:",self.use_cuda)
+                            # print("INSIDE CUDA:",self.use_cuda)
                             if self.use_cuda:
                                 a_ij = a_ij.cuda()
-                            print("A",a_ij.type())
-                            print("B",b_ij.type())
+                            # print("A",a_ij.type())
+                            # print("B",b_ij.type())
                             if self.use_cuda:
                                 b_ij = b_ij.cuda()
                             b_ij = b_ij + a_ij

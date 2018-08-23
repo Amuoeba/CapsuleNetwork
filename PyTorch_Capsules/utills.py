@@ -1,6 +1,8 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+
 
 plt.switch_backend('agg')
 
@@ -34,4 +36,4 @@ class ImagePlotter():
             plt.show()
 
 
-# class GraphPlotter():
+

@@ -6,6 +6,9 @@ from torch.optim import Adam
 import numpy as np
 from itertools import islice
 import time
+import pandas as pd
+import seaborn as sb
+
 
 
 # #Inptu is of shape [10,1,28,28] -> [batch,chan,dim_x,dim_y]
@@ -16,8 +19,14 @@ import time
 # CUDA
 CUDA = True
 
-# Plotter for ploting the raw images and reconstructions
+# Data collection, image representations and plotting
 plotter = ImagePlotter()
+
+train_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
+test_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
+
+
+
 
 # Instanciating the network
 caps_net = CapsuleNet(use_cuda=CUDA)
@@ -62,15 +71,24 @@ for epoch in range(no_epochs):
 
         loss = caps_net.loss(out,decoded,lable,image_batch)
         loss[0].backward()
-
         optimizer.step()
-        train_loss = train_loss + loss[0].data.item()       
+
+
+        total_loss = loss[0].data.item()
+        margin_loss = loss[1][0].item()
+        reconstruction_loss = loss[1][1].item()
+        train_loss = train_loss + total_loss
+        train_accuracy = sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size)
+        
         print("Epoch",epoch,"Batch:",batch_number)
         # print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
         # print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
         print("Train loss",train_loss)
-        print("Margin loss:", loss[1][0], "Reconstruction loss:", loss[1][1])
-        print("Train accuracy:",sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size))
+        print("Margin loss:", margin_loss, "Reconstruction loss:", reconstruction_loss)
+        print("Train accuracy:", train_accuracy)
+
+        train_data.append(pd.DataFrame({"epoch":[epoch],"batch":[batch_number],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]}))
+
         
         if batch_number % 10 == 0:
             # print("Decoded size",decoded.size())
@@ -107,3 +125,10 @@ with torch.no_grad():
         total_test_loss += loss[0]
 
         print("Batch:",batch_number,"Test accuracy:",sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size))
+
+
+
+# Create and save plots in the plots foldier
+
+train_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data)
+train_graph.savefig("./plots/train_plot.png")
