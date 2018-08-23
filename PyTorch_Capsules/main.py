@@ -23,7 +23,7 @@ CUDA = True
 plotter = ImagePlotter()
 
 train_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
-test_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
+
 
 
 
@@ -39,7 +39,7 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 1
+no_epochs = 40
 batch_size = 100
 
 # Instantiating the train loader
@@ -104,6 +104,8 @@ time.sleep(1)
 
 
 total_test_loss = 0
+no_examples = 0
+total_accuracy = 0
 
 
 # test_mnist = Mnist(10)
@@ -124,14 +126,20 @@ with torch.no_grad():
 
         loss = caps_net.loss(out,decoded,lable,image_batch)
         total_test_loss += loss[0]
+        accuracy = sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size)
+        no_examples += batch_size
+        total_accuracy += accuracy        
+        print("Batch:",batch_number,"Test accuracy:",accuracy)
 
-        print("Batch:",batch_number,"Test accuracy:",sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size))
+print("################################")
+print("Final test accuracy:",accuracy/no_examples)
+print("################################")
 
 
 
 # Create and save plots in the plots foldier
 
-print(train_data)
+# print(train_data)
 
 accuracy_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data,kind="line")
 totloss_graph = sb.relplot(x="batch",y="total-loss",hue="epoch",data=train_data,kind="line")
