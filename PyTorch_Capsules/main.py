@@ -1,6 +1,6 @@
 import torch
 from CapsNetwork import CapsuleNet
-from utills import ImagePlotter
+import utills
 from data_reader import Mnist
 from torch.optim import Adam
 import numpy as np
@@ -8,6 +8,7 @@ from itertools import islice
 import time
 import pandas as pd
 import seaborn as sb
+import pickle
 
 
 
@@ -20,7 +21,8 @@ import seaborn as sb
 CUDA = True
 
 # Data collection, image representations and plotting
-plotter = ImagePlotter()
+exp_env = utills.PrepareExperiment(1)
+plotter = utills.ImagePlotter(destination=exp_env.images)
 
 train_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
 
@@ -39,7 +41,7 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 40
+no_epochs = 1
 batch_size = 100
 
 # Instantiating the train loader
@@ -147,7 +149,7 @@ totloss_graph = sb.relplot(x="batch",y="total-loss",hue="epoch",data=train_data,
 margin_graph = sb.relplot(x="batch",y="margin-loss",hue="epoch",data=train_data,kind="line")
 reconstruction_graph = sb.relplot(x="batch",y="reconstruction-loss",hue="epoch",data=train_data,kind="line")
 
-accuracy_graph.savefig("./plots/accuracy_plot.png")
-totloss_graph.savefig("./plots/total_plot.png")
-margin_graph.savefig("./plots/margin_plot.png")
-reconstruction_graph.savefig("./plots/reconst_plot.png")
+accuracy_graph.savefig(exp_env.plots+"accuracy_plot.png")
+totloss_graph.savefig(exp_env.plots+"total_plot.png")
+margin_graph.savefig(exp_env.plots+"margin_plot.png")
+reconstruction_graph.savefig(exp_env.plots+"reconst_plot.png")
