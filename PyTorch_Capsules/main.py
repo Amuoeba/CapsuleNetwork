@@ -87,7 +87,7 @@ for epoch in range(no_epochs):
         print("Margin loss:", margin_loss, "Reconstruction loss:", reconstruction_loss)
         print("Train accuracy:", train_accuracy)
 
-        cur_df = pd.DataFrame({"epoch":[epoch],"batch":[batch_number],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]})
+        cur_df = pd.DataFrame({"epoch":[int(epoch)],"batch":[int(batch_number)],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]})
         train_data = train_data.append(cur_df)
 
         
@@ -133,5 +133,12 @@ with torch.no_grad():
 
 print(train_data)
 
-train_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data,kind="line")
-train_graph.savefig("./plots/train_plot.png")
+accuracy_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data,kind="line")
+totloss_graph = sb.relplot(x="batch",y="total-loss",hue="epoch",data=train_data,kind="line")
+margin_graph = sb.relplot(x="batch",y="margin-loss",hue="epoch",data=train_data,kind="line")
+reconstruction_graph = sb.relplot(x="batch",y="reconstruction-loss",hue="epoch",data=train_data,kind="line")
+
+accuracy_graph.savefig("./plots/accuracy_plot.png")
+totloss_graph.savefig("./plots/total_plot.png")
+margin_graph.savefig("./plots/margin_plot.png")
+reconstruction_graph.savefig("./plots/reconst_plot.png")
