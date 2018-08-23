@@ -30,7 +30,7 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 10
+no_epochs = 30
 batch_size = 100
 
 # Instantiating the train loader
@@ -65,9 +65,9 @@ for epoch in range(no_epochs):
 
         optimizer.step()
         train_loss = train_loss + loss[0].data.item()       
-        print("Batch:",batch_number)
-        print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
-        print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
+        print("Epoch",epoch,"Batch:",batch_number)
+        # print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
+        # print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
         print("Train loss",train_loss)
         print("Margin loss:", loss[1][0], "Reconstruction loss:", loss[1][1])
         print("Train accuracy:",sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size))

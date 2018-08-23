@@ -10,8 +10,6 @@ plt.switch_backend('agg')
 
 class ImagePlotter():
 
-
-
     def __init__(self,destination="./images/",name="image_"):
         self.destination = destination
         self.current = 0
@@ -34,3 +32,6 @@ class ImagePlotter():
             self.current += 1
         else:
             plt.show()
+
+
+# class GraphPlotter():
