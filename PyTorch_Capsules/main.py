@@ -30,8 +30,8 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 2
-batch_size = 50
+no_epochs = 10
+batch_size = 100
 
 # Instantiating the train loader
 mnist = Mnist(batch_size)
@@ -76,8 +76,9 @@ for epoch in range(no_epochs):
             # print("Decoded size",decoded.size())
             # print("Train accuracy:",sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size))
             # print("Num examples:",decoded[:10,0].size())
+            name = "image_" + str(epoch) + "_"
             to_plot = decoded[:10,0].cpu().detach().numpy()            
-            plotter.plot_images_separately(to_plot,save=True)
+            plotter.plot_images_separately(to_plot,save=True,name=name)
 
 
 time.sleep(1)

@@ -17,7 +17,7 @@ class ImagePlotter():
         self.current = 0
         self.name = name    
 
-    def plot_images_separately(self,images,save=False):
+    def plot_images_separately(self,images,save=False,name = self.name):
         "Plot the six MNIST images separately."
         fig = plt.figure()
         
@@ -30,7 +30,7 @@ class ImagePlotter():
             plt.yticks(np.array([]))
         
         if save:
-            fig.savefig(self.destination + self.name + str(self.current) + ".png")
+            fig.savefig(self.destination + name + str(self.current) + ".png")
             self.current += 1
         else:
             plt.show()
