@@ -77,7 +77,7 @@ class CapsuleLayer(nn.Module):
                         
 
                         if self.collectData:
-                            c_analize = torch.tensor(c_ij).squeeze().detach().numpy()
+                            c_analize = torch.tensor(c_ij).cpu().squeeze().detach().numpy()
                             c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
                             colledtion.append(c_analize)             
 
