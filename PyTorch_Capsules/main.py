@@ -52,7 +52,7 @@ for epoch in range(no_epochs):
     train_loss = 0
     print("Epoch:",epoch)
 
-    for batch_number, data in islice(enumerate(mnist.train_loader),10): #islice(generator,to,step)        
+    for batch_number, data in enumerate(mnist.train_loader): #islice(generator,to,step)        
         if batch_number % collection_step == 0:
             caps_net.set_collectData(True)
         else:
@@ -108,7 +108,7 @@ total_test_loss = 0
 no_examples = 0
 total_accuracy = 0
 with torch.no_grad():
-    for batch_number, data in islice(enumerate(mnist.test_loader),10):
+    for batch_number, data in enumerate(mnist.test_loader):
         image_batch = data[0]
         target_batch = data[1]
 
