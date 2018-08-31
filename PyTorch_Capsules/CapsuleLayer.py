@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import numpy as np
+import pandas as pd
 
 # from main import CUDA
 
@@ -10,7 +12,9 @@ class CapsuleLayer(nn.Module):
         self.forward_type = None
         self.W = None
         self.use_cuda = use_cuda
-        # print("CUDA:",self.use_cuda)
+        self.collectData = False
+        self.collectedData = []
+        # print("CUDA:",self.use_cuda)˝
 
         #Check whether routing should be conducted or not
         if not routing:
@@ -59,12 +63,23 @@ class CapsuleLayer(nn.Module):
                     if self.use_cuda:
                         b_ij.cuda()
 
+                    
+                    if self.collectData:
+                        colledtion = []
+
                     for i in range(num_itterations):
                         c_ij = F.softmax(b_ij,dim=1)
+                        
                         if use_cuda:
                             c_ij = c_ij.cuda()
 
                         c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
+                        
+
+                        if self.collectData:
+                            c_analize = torch.tensor(c_ij).squeeze().detach().numpy()
+                            c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
+                            colledtion.append(c_analize)             
 
 
                         s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
@@ -75,20 +90,18 @@ class CapsuleLayer(nn.Module):
                         if self.use_cuda:
                             v_j = v_j.cuda()
 
-
-
                         if i < num_itterations - 1:
                             a_ij = torch.matmul(prediction.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
                             a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
-                            # print("INSIDE CUDA:",self.use_cuda)
                             if self.use_cuda:
                                 a_ij = a_ij.cuda()
-                            # print("A",a_ij.type())
-                            # print("B",b_ij.type())
                             if self.use_cuda:
                                 b_ij = b_ij.cuda()
                             b_ij = b_ij + a_ij
-                            
+                    
+                    if self.collectData:
+                        self.collectedData.append(colledtion)
+
 
                     out = v_j.squeeze(1)
                     return out       

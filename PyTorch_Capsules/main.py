@@ -7,7 +7,6 @@ import numpy as np
 from itertools import islice
 import time
 import pandas as pd
-import seaborn as sb
 import pickle
 
 
@@ -22,16 +21,13 @@ CUDA = True
 
 # Data collection, image representations and plotting
 exp_env = utills.PrepareExperiment(1)
-plotter = utills.ImagePlotter(destination=exp_env.images)
-
-train_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
-
-
-
+collection_step = 10
+# plotter = utills.ImagePlotter(destination=exp_env.images)
 
 
 # Instanciating the network
 caps_net = CapsuleNet(use_cuda=CUDA)
+print(caps_net)
 if CUDA:
     caps_net.cuda()
 
@@ -41,7 +37,7 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 1
+no_epochs = 10
 batch_size = 100
 
 # Instantiating the train loader
@@ -49,14 +45,18 @@ mnist = Mnist(batch_size)
 
 
 # instantiate the optimizer
-optimizer = Adam(caps_net.parameters())
+optimizer = Adam(caps_net.parameters(),lr=0.0001)
 
 caps_net.train()
-for epoch in range(no_epochs):
-    
+for epoch in range(no_epochs):    
     train_loss = 0
     print("Epoch:",epoch)
-    for batch_number, data in enumerate(mnist.train_loader): #islice(generator,to,step)
+
+    for batch_number, data in islice(enumerate(mnist.train_loader),10): #islice(generator,to,step)        
+        if batch_number % collection_step == 0:
+            caps_net.set_collectData(True)
+        else:
+            caps_net.set_collectData(False)
 
         image_batch = data[0]
         target_batch = data[1]      
@@ -90,31 +90,25 @@ for epoch in range(no_epochs):
         print("Train accuracy:", train_accuracy)
 
         cur_df = pd.DataFrame({"epoch":[int(epoch)],"batch":[int(batch_number)],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]})
-        train_data = train_data.append(cur_df)
-
+        exp_env.train_data = exp_env.train_data.append(cur_df)        
         
-        if batch_number % 10 == 0:
-            # print("Decoded size",decoded.size())
-            # print("Train accuracy:",sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size))
-            # print("Num examples:",decoded[:10,0].size())
-            name = "image_" + str(epoch) + "_"
-            to_plot = decoded[:10,0].cpu().detach().numpy()            
-            plotter.plot_images_separately(to_plot,save=True,name=name)
+        if batch_number % collection_step == 0:            
+            images = decoded[:10,0].cpu().detach().numpy()
+            coupling_states = caps_net.secondaryCapsules.collectedData
+            caps_net.secondaryCapsules.collectedData = []
+
+            images = utills.CollectedData("image",images,epoch,batch_number)
+            coupling_states = utills.CollectedData("coupling_coefficients",coupling_states,epoch,batch_number)
+            exp_env.additional_collected_data.append({"image":images,"coupling":coupling_states})
 
 
-time.sleep(1)
 
 
 total_test_loss = 0
 no_examples = 0
 total_accuracy = 0
-
-
-# test_mnist = Mnist(10)
-# print(next(enumerate(test_mnist.test_loader)))
-
 with torch.no_grad():
-    for batch_number, data in enumerate(mnist.test_loader):
+    for batch_number, data in islice(enumerate(mnist.test_loader),10):
         image_batch = data[0]
         target_batch = data[1]
 
@@ -134,22 +128,12 @@ with torch.no_grad():
         print("Batch:",batch_number,"Test accuracy:",accuracy)
 
 print("################################")
-print("Final test accuracy:",accuracy/no_examples)
+print("Final test accuracy:",total_accuracy/no_examples)
 print("################################")
 
 
+exp_env.create_plots()
 
-# Create and save plots in the plots foldier
-cols = ["epoch","batch"]
-train_data[cols] = train_data[cols].applymap(np.int64)
-# print(train_data)
-
-accuracy_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data,kind="line")
-totloss_graph = sb.relplot(x="batch",y="total-loss",hue="epoch",data=train_data,kind="line")
-margin_graph = sb.relplot(x="batch",y="margin-loss",hue="epoch",data=train_data,kind="line")
-reconstruction_graph = sb.relplot(x="batch",y="reconstruction-loss",hue="epoch",data=train_data,kind="line")
-
-accuracy_graph.savefig(exp_env.plots+"accuracy_plot.png")
-totloss_graph.savefig(exp_env.plots+"total_plot.png")
-margin_graph.savefig(exp_env.plots+"margin_plot.png")
-reconstruction_graph.savefig(exp_env.plots+"reconst_plot.png")
+# print(len(exp_env.additional_collected_data))
+# print(exp_env.additional_collected_data[0]['coupling'])
+# print(np.array(exp_env.additional_collected_data[0]['coupling'].data).shape)

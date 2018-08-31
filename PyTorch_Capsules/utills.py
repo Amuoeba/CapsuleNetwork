@@ -2,36 +2,50 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sb
 import os
 import itertools
 
 
 plt.switch_backend('agg')
 
-# from main import CUDA
+
 
 
 class PrepareExperiment():
-    def __init__(self, id, home="."):
+    def __init__(self, id, home=".",):
         self.id = id
         self.home=home        
         self.expHome = None
-        self.images = None
+        self.image_dest = None
+        self.reconst_image_dest = None
+        self.coupling_image_dest = None
         self.plots = None
         self._prepare_foldiers()
+        self.train_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
+        self.additional_collected_data = []
+
+        self.plotter = ImagePlotter(self.image_dest)
+        
     
     def _prepare_foldiers(self):
         dirname = self.unique_name(self.home + "/experiments/experiment",makedir=True)
-        images = dirname+"/images"
+        img=dirname+"/images"
+        img_reconst = "/reconstructions"
+        img_coupling = "/coupling"
+        
         plots = dirname+"/plots"       
-        os.makedirs(dirname)        
-        os.makedirs(images)
+        os.makedirs(dirname)
+        os.makedirs(img)   
+        os.makedirs(img+img_reconst)
+        os.makedirs(img+img_coupling)
         os.makedirs(plots)
+        
         self.expHome = dirname+"/"
-        self.images = images+"/"
+        self.reconst_image_dest = img_reconst+"/"
+        self.coupling_image_dest = img_coupling+"/"
         self.plots = plots+"/"
-        
-        
+        self.image_dest = img+"/" 
 
     @staticmethod
     def unique_name(basename, ext=None, makedir=False):
@@ -44,17 +58,50 @@ class PrepareExperiment():
             actualname = "%s.%s" % (basename, ext)    
             while os.path.exists(actualname):
                 actualname = "%s_%d.%s" % (basename, next(c),ext)
-        return actualname    
+        return actualname
+    
+    def create_plots(self):
+        for data in self.additional_collected_data:
+            image = data["image"]
+            coupling = data["coupling"]            
+
+            reconst_image_name = "image_" + str(image.epoch) + "_"
+            self.plotter.plot_reconstruction_images(image.data,save=True,name=reconst_image_name,subdest=self.reconst_image_dest)
+            couple_image_name = "coupl_" + str(coupling.epoch) + "_"
+            self.plotter.plot_coupling_image(coupling,save=True,name=couple_image_name,subdest=self.coupling_image_dest)
+        
+        self.plot_train_data()
+
+
+
+    def plot_train_data(self):
+        train_data = self.train_data
+        cols = ["epoch","batch"]
+        train_data[cols] = train_data[cols].applymap(np.int64)       
+
+        accuracy_graph = sb.relplot(x="batch",y="accuracy",hue="epoch",data=train_data,kind="line")
+        totloss_graph = sb.relplot(x="batch",y="total-loss",hue="epoch",data=train_data,kind="line")
+        margin_graph = sb.relplot(x="batch",y="margin-loss",hue="epoch",data=train_data,kind="line")
+        reconstruction_graph = sb.relplot(x="batch",y="reconstruction-loss",hue="epoch",data=train_data,kind="line")
+
+        accuracy_graph.savefig(self.plots+"accuracy_plot.png")
+        totloss_graph.savefig(self.plots+"total_plot.png")
+        margin_graph.savefig(self.plots+"margin_plot.png")
+        reconstruction_graph.savefig(self.plots+"reconst_plot.png")
+
+    
+
+
 
 
 class ImagePlotter():
-
     def __init__(self,destination="./images/",name="image_"):
         self.destination = destination
-        self.current = 0
+        self.current_reconst = 0
+        self.current_coupling = 0
         self.name = name    
 
-    def plot_images_separately(self,images,save=False,name="default"):
+    def plot_reconstruction_images(self,images,save=False,name="default",subdest=""):
         "Plot the six MNIST images separately."
         fig = plt.figure()
         
@@ -67,11 +114,85 @@ class ImagePlotter():
             plt.yticks(np.array([]))
         
         if save:
-            fig.savefig(self.destination + name + str(self.current) + ".png")
-            self.current += 1
+            # print(self.destination)
+            # print(subdest)
+            # print(name)
+            fig.savefig(self.destination + subdest + name + str(self.current_reconst) + ".png")
+            self.current_reconst += 1
         else:
             plt.show()
+    
+    def plot_coupling_image(self,data,save=False,name="default",subdest=""):
+        pltData =  np.array(data.data)
+        # print("+++++",pltData.shape[0])
+        # print("+++++",pltData.shape[1])
+        # print("+++++",pltData.shape[2])
+        # print("+++++",pltData.shape[3])
+        # print("+++++",pltData.shape[4])
+        # print("+++++",pltData.shape[5])
+        # print("+++++",pltData.shape[6])
+                
+        plt.figure(figsize=(20,20))
+        Y_max = pltData.shape[4]
+        Y_min = 0
+        X_max = pltData.shape[3]
+        X_min = 0
+
+        loffset = 1/X_max
+        koffset = 1/Y_max
+
+        coppies = pltData.shape[1]
+        spacing = X_max + X_max * loffset + 1
+
+        ax = plt.subplot(111)
+        plt.setp(ax, 'frame_on', False)
+        ax.set_ylim([0, (Y_max-Y_min)+Y_max*koffset])
+        ax.set_xlim([0, ((X_max - X_min)+X_max*loffset + 1)*coppies])
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.grid(False)
+
+        # print("Coppies:",coppies)
+
+        for c in np.arange(0,coppies):
+            for k in np.arange(Y_min, Y_max):    
+                for l in np.arange(X_min, X_max):
+                    da = pltData[0][c][0][l][k]
+                    # if c == 0:
+                    #     print(da)
+                    
+                    x_start = l + l*loffset + c*spacing 
+                    x_stop = l+1 + l*loffset + c*spacing
+                    y_start = k + k*koffset
+                    y_stop = k+1 + k*koffset
+                    
+                    ax.imshow(da,cmap="binary",extent=[x_start,x_stop,y_start,y_stop])                
+
+        if save:
+            plt.savefig(self.destination + subdest + name + str(self.current_coupling) + ".png")
+            self.current_coupling += 1
+        else:  
+            plt.show()
+            
+        
+
+    
+    
 
 
 
 
+class CollectedData():
+    """
+    Possible types are:
+        -image        
+        -netwoek state
+    """
+    def __init__(self,type,data,epoch,batch):
+        self.type = type
+        self.data = data
+        self.epoch = epoch
+        self.batch = batch
+        
+
+    

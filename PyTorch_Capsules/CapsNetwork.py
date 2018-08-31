@@ -11,7 +11,7 @@ from DecoderLayer import DecoderLayer
 
 class CapsuleNet(nn.Module):
     def __init__(self,use_cuda=False):
-        super().__init__()
+        super().__init__()        
         self.firstConv = ConvLayer()
         self.primeryCapsules = CapsuleLayer()
         self.secondaryCapsules = CapsuleLayer(routing=True,routing_type="Dinamic",use_cuda=use_cuda)
@@ -63,5 +63,9 @@ class CapsuleNet(nn.Module):
         # print("MSElosss:",loss)
         # print("!!!!!!!!!!!!1 Reconstruction loss end !!!!!!!!!!!!!!!!!")
         return loss * 0.0005
+
+    
+    def set_collectData(self,value):
+        self.secondaryCapsules.collectData = value
 
     

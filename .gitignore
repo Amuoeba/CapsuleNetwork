@@ -6,4 +6,5 @@
 /PyTorch_Capsules/.vscode
 /PyTorch_Capsules/Data
 /PyTorch_Capsules/.pylintrc
+/PyTorch_Capsules/experiments/*
 
