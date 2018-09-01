@@ -1,0 +1,19 @@
+{
+   "type":{
+       "laptop":{
+           "cuda":false,
+           "islice":10,
+           "batch size":2,
+           "epochs":1,
+           "collection step":10
+       },
+       "cluster":{
+           "cuda":true,
+           "islice":null,
+           "batch size":100,
+           "epochs":10,
+           "collection step":10
+
+       }
+   }
+}

@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sb
 import os
+import sys
 import itertools
 
 
@@ -176,12 +177,6 @@ class ImagePlotter():
             
         
 
-    
-    
-
-
-
-
 class CollectedData():
     """
     Possible types are:
@@ -196,3 +191,29 @@ class CollectedData():
         
 
     
+
+class InitConfig():
+    def __init__(self):
+        pass
+    
+    @staticmethod
+    def check_config(f,args):
+        try:
+            run_type = str(args[1])
+        except:
+            print(
+            "You have forgot to enter the type of execution parameter e.g. : \n",
+            "python main.py exec_style \n"
+            )
+            sys.exit(1)            
+        try:
+            config = f["type"][run_type]
+        except:   
+            print(            
+                "Configuration with this name does not exist in the config.jason file. \n",
+                "You can create your own configuration by appending it to the list of existing ones \n",
+                "Just make sure you follwo the pattern of other examples \n"            
+                )
+            sys.exit(1)
+
+        return config

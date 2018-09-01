@@ -1,14 +1,31 @@
 import torch
-from CapsNetwork import CapsuleNet
-import utills
-from data_reader import Mnist
-from torch.optim import Adam
-import numpy as np
-from itertools import islice
+import json
+import sys
 import time
 import pandas as pd
 import pickle
+from itertools import islice
+from torch.optim import Adam
+import numpy as np
+from CapsNetwork import CapsuleNet
+import utills
+from data_reader import Mnist
 
+
+
+with open("./config.json") as json_data:
+    config = json.load(json_data)
+
+
+config = utills.InitConfig.check_config(config,sys.argv)
+
+
+
+CUDA = config["cuda"]
+islice_range = config["islice"]
+batch_size = config["batch size"]
+no_epochs = config["epochs"]
+collection_step = config["collection step"]
 
 
 # #Inptu is of shape [10,1,28,28] -> [batch,chan,dim_x,dim_y]
@@ -17,13 +34,10 @@ import pickle
 
 
 # CUDA
-CUDA = True
+
 
 # Data collection, image representations and plotting
 exp_env = utills.PrepareExperiment(1)
-collection_step = 10
-# plotter = utills.ImagePlotter(destination=exp_env.images)
-
 
 # Instanciating the network
 caps_net = CapsuleNet(use_cuda=CUDA)
@@ -37,8 +51,7 @@ print("No. parameters: ",params)
 
 
 # Training parameters
-no_epochs = 10
-batch_size = 100
+
 
 # Instantiating the train loader
 mnist = Mnist(batch_size)
@@ -52,7 +65,7 @@ for epoch in range(no_epochs):
     train_loss = 0
     print("Epoch:",epoch)
 
-    for batch_number, data in enumerate(mnist.train_loader): #islice(generator,to,step)        
+    for batch_number, data in islice(enumerate(mnist.train_loader),None,islice_range,None):
         if batch_number % collection_step == 0:
             caps_net.set_collectData(True)
         else:
@@ -108,7 +121,7 @@ total_test_loss = 0
 no_examples = 0
 total_accuracy = 0
 with torch.no_grad():
-    for batch_number, data in enumerate(mnist.test_loader):
+    for batch_number, data in islice(enumerate(mnist.test_loader),None,islice_range,None):
         image_batch = data[0]
         target_batch = data[1]
 
