@@ -19,22 +19,12 @@ with open("./config.json") as json_data:
 
 config = utills.InitConfig.check_config(config,sys.argv)
 
-
-
 CUDA = config["cuda"]
 islice_range = config["islice"]
 batch_size = config["batch size"]
 no_epochs = config["epochs"]
 collection_step = config["collection step"]
-
-
-# #Inptu is of shape [10,1,28,28] -> [batch,chan,dim_x,dim_y]
-# print("Size of the DATA:",a[0].size())
-# plot_images_separately(a[0][:10, 0].data.cpu().numpy())
-
-
-# CUDA
-
+learning_rate = config["lr"]
 
 # Data collection, image representations and plotting
 exp_env = utills.PrepareExperiment(1)
@@ -49,16 +39,11 @@ model_parameters = filter(lambda p: p.requires_grad, caps_net.parameters())
 params = sum([np.prod(p.size()) for p in model_parameters])
 print("No. parameters: ",params)
 
-
-# Training parameters
-
-
 # Instantiating the train loader
 mnist = Mnist(batch_size)
 
-
 # instantiate the optimizer
-optimizer = Adam(caps_net.parameters(),lr=0.0001)
+optimizer = Adam(caps_net.parameters(),lr=learning_rate)
 
 caps_net.train()
 for epoch in range(no_epochs):    
@@ -144,9 +129,5 @@ print("################################")
 print("Final test accuracy:",total_accuracy/no_examples)
 print("################################")
 
-
 exp_env.create_plots()
 
-# print(len(exp_env.additional_collected_data))
-# print(exp_env.additional_collected_data[0]['coupling'])
-# print(np.array(exp_env.additional_collected_data[0]['coupling'].data).shape)

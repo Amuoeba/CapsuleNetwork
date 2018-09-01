@@ -10,9 +10,6 @@ import itertools
 
 plt.switch_backend('agg')
 
-
-
-
 class PrepareExperiment():
     def __init__(self, id, home=".",):
         self.id = id
@@ -70,6 +67,7 @@ class PrepareExperiment():
             self.plotter.plot_reconstruction_images(image.data,save=True,name=reconst_image_name,subdest=self.reconst_image_dest)
             couple_image_name = "coupl_" + str(coupling.epoch) + "_"
             self.plotter.plot_coupling_image(coupling,save=True,name=couple_image_name,subdest=self.coupling_image_dest)
+
         
         self.plot_train_data()
 
@@ -124,23 +122,19 @@ class ImagePlotter():
             plt.show()
     
     def plot_coupling_image(self,data,save=False,name="default",subdest=""):
-        pltData =  np.array(data.data)
-        # print("+++++",pltData.shape[0])
-        # print("+++++",pltData.shape[1])
-        # print("+++++",pltData.shape[2])
-        # print("+++++",pltData.shape[3])
-        # print("+++++",pltData.shape[4])
-        # print("+++++",pltData.shape[5])
-        # print("+++++",pltData.shape[6])
-                
-        plt.figure(figsize=(20,20))
+        
+        pltData =  np.array(data.data)                
+        plt.figure(figsize=(30,30))
+
+        range_min = np.amin(pltData)
+        range_max = np.amax(pltData)
         Y_max = pltData.shape[4]
         Y_min = 0
         X_max = pltData.shape[3]
         X_min = 0
 
-        loffset = 1/X_max
-        koffset = 1/Y_max
+        loffset = 4/X_max
+        koffset = 2/Y_max
 
         coppies = pltData.shape[1]
         spacing = X_max + X_max * loffset + 1
@@ -167,7 +161,7 @@ class ImagePlotter():
                     y_start = k + k*koffset
                     y_stop = k+1 + k*koffset
                     
-                    ax.imshow(da,cmap="binary",extent=[x_start,x_stop,y_start,y_stop])                
+                    ax.imshow(da,cmap="binary",extent=[x_start,x_stop,y_start,y_stop],vmin=range_min, vmax=range_max)             
 
         if save:
             plt.savefig(self.destination + subdest + name + str(self.current_coupling) + ".png")

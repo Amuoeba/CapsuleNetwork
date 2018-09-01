@@ -5,14 +5,16 @@
            "islice":10,
            "batch size":2,
            "epochs":1,
-           "collection step":10
+           "collection step":3,
+           "lr":0.001
        },
        "cluster":{
            "cuda":true,
            "islice":null,
            "batch size":100,
            "epochs":10,
-           "collection step":10
+           "collection step":10,
+           "lr":0.001
 
        }
    }
