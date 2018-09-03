@@ -59,7 +59,8 @@ for epoch in range(no_epochs):
         image_batch = data[0]
         target_batch = data[1]      
 
-        lable = torch.eye(10).index_select(dim=0,index=target_batch)        
+        lable = torch.eye(10).index_select(dim=0,index=target_batch)
+
 
         if CUDA:
             image_batch = image_batch.cuda()
@@ -90,11 +91,24 @@ for epoch in range(no_epochs):
         cur_df = pd.DataFrame({"epoch":[int(epoch)],"batch":[int(batch_number)],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]})
         exp_env.train_data = exp_env.train_data.append(cur_df)        
         
-        if batch_number % collection_step == 0:            
-            images = decoded[:10,0].cpu().detach().numpy()
-            coupling_states = caps_net.secondaryCapsules.collectedData
-            caps_net.secondaryCapsules.collectedData = []
+        if batch_number % collection_step == 0:
+            all_images = decoded.cpu().detach().numpy()
+            all_coupling_states =np.squeeze(np.array(caps_net.secondaryCapsules.collectedData)).reshape((3,4,10,32,6,6))  
 
+            indices = utills.CollectedData.find_first_occurance_index(target_batch)
+           
+
+            images = {}
+            coupling_states = {}
+            for i in range(10):
+                if not indices[i] == None:
+                    images[i] = all_images[indices[i]]
+                    coupling_states[i] = all_coupling_states[:][indices[i]]
+                else:
+                    images[i] = None
+                    coupling_states[i] = None 
+
+            caps_net.secondaryCapsules.collectedData = []
             images = utills.CollectedData("image",images,epoch,batch_number)
             coupling_states = utills.CollectedData("coupling_coefficients",coupling_states,epoch,batch_number)
             exp_env.additional_collected_data.append({"image":images,"coupling":coupling_states})
