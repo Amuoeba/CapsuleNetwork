@@ -93,7 +93,7 @@ for epoch in range(no_epochs):
         
         if batch_number % collection_step == 0:
             all_images = decoded.cpu().detach().numpy()
-            all_coupling_states =np.squeeze(np.array(caps_net.secondaryCapsules.collectedData)).reshape((3,4,10,32,6,6))  
+            all_coupling_states =np.squeeze(np.array(caps_net.secondaryCapsules.collectedData)).reshape((batch_size,4,10,32,6,6))  
 
             indices = utills.CollectedData.find_first_occurance_index(target_batch)
            
