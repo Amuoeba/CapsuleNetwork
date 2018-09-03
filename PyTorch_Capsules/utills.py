@@ -169,7 +169,7 @@ class ImagePlotter():
                             
                             ax.imshow(da,cmap="binary",extent=[x_start,x_stop,y_start,y_stop],vmin=range_min, vmax=range_max)             
 
-                plt.suptitle('Coupling coefficients for number {}'.format(i), fontsize=20)
+                plt.suptitle('Coupling coefficients for number {}'.format(i), fontsize=50)
                 if save:
                     plt.savefig(self.destination + subdest + name + "_ID" +str(self.current_coupling) +"_"+ str(i) + ".png")
                     self.current_coupling += 1
