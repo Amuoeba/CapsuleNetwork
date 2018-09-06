@@ -50,6 +50,7 @@ class CapsuleLayer(nn.Module):
                 nextCapsDim = nextCapsDim
 
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
+                self.b_ij = nn.Parameter(torch.zeros(1,numPrevCaps,numNextCaps,1))
 
                 def forward_route(self,x):                    
                     batchSize = x.size(0)
@@ -58,7 +59,7 @@ class CapsuleLayer(nn.Module):
                     prediction = torch.matmul(W,x)
 
                     
-                    b_ij = torch.zeros(1,numPrevCaps,numNextCaps,1,requires_grad=True)
+                    #b_ij = torch.zeros(1,numPrevCaps,numNextCaps,1,requires_grad=True)
                     
                     if self.use_cuda:
                         b_ij.cuda()
