@@ -35,34 +35,18 @@ class DecoderLayer(nn.Module):
         )
     
     def forward(self,x):
-        # max_class is calculated by checking the lenght of the capsule output vectors.
-        # longer vectors mean greater probability for that class to be present
-        # print("0---------------",x.size())
-        max_class = torch.sqrt(x**2).sum(2)
-        # print("1---------------",max_class.size())
-        max_class = F.softmax(max_class,dim=1)
-        # print("2---------------",max_class.size())
+        max_class = torch.sqrt(x**2).sum(2)       
+        max_class = F.softmax(max_class,dim=1) 
         max_class_indices = max_class.max(dim=1)[1]
-        # print("3---------------",max_class_indices.size())
-        # print(max_class_indices)
+
         mask = torch.eye(10)
         if self.use_cuda:
             mask = mask.cuda()
-        # print("4---------------",mask.size())
+  
         mask = mask.index_select(dim=0, index=max_class_indices.squeeze(1).data)
-        # print(mask)
-        # print("5---------------",mask.size())
-        masked_x = x * mask[:,:,None,None]
-        # print(masked_x)
-        # print("6---------------",masked_x.size())
-        masked_x = masked_x.view(x.size(0),-1)
-        # print("7---------------",masked_x.size())   
+        masked_x = x * mask[:,:,None,None]  
+        masked_x = masked_x.view(x.size(0),-1)        
         out = self.decoder_layers(masked_x)
         out = out.view(-1,1,28,28)
-        # print(out)
-
-        # plotter = ImagePlotter(destination="./DecoderTest/")
-        # to_plot = out[:2,0].detach().numpy()            
-        # plotter.plot_images_separately(to_plot,save=True)
-
+        
         return out, mask

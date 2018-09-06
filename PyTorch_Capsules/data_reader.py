@@ -7,6 +7,11 @@ from torchvision import datasets, transforms
 
 # Loading the MNIST data 
 class Mnist:
+    """
+    Class that is used to read  adn transform the Mnist datasets from the web
+    Args:
+        batch_size: Preffered batch size
+    """
     def __init__(self, batch_size):
         dataset_transform = transforms.Compose([
                        transforms.ToTensor(),
