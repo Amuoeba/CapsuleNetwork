@@ -60,7 +60,7 @@ class CapsuleLayer(nn.Module):
 
                     
                     #b_ij = torch.zeros(1,numPrevCaps,numNextCaps,1,requires_grad=True)
-                    
+                    b_ij = self.b_ij
                     if self.use_cuda:
                         b_ij.cuda()
 
