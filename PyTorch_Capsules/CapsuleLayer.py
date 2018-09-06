@@ -68,14 +68,16 @@ class CapsuleLayer(nn.Module):
                         colledtion = []
 
                     for i in range(num_itterations):
-                        print("Itteration: {}, B_ij:{} ,Size: {}".format(i,b_ij,b_ij.size()))
+                        #print("Itteration: {}, B_ij:{} ,Size: {}".format(i,b_ij,b_ij.size()))
                         c_ij = F.softmax(b_ij,dim=2)
-                        print("C_ij:{} ,Size: {}".format(c_ij,c_ij.size()))
+                        #print("C_ij:{} ,Size: {}".format(c_ij,c_ij.size()))
                         
                         if use_cuda:
                             c_ij = c_ij.cuda()
 
                         c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
+                        #print("C_ij size: {} ".format(c_ij.size()))
+                        #print("Prediction size: {}".format(prediction.size()))
                         
 
                         if self.collectData:
