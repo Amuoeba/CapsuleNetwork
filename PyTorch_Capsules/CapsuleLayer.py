@@ -50,17 +50,20 @@ class CapsuleLayer(nn.Module):
                 nextCapsDim = nextCapsDim
 
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
-                self.b_ij = nn.Parameter(torch.zeros(1,numPrevCaps,numNextCaps,1))
 
                 def forward_route(self,x):                    
                     batchSize = x.size(0)
+                    print("X before: {}".format(x.size()))
                     x = torch.stack([x]*numNextCaps,dim=2).unsqueeze(4)
                     W = torch.cat([self.W] * batchSize,dim=0)
+                    print("X dim: {}".format(x.size()))
+                    print("W dim: {}".format(W.size()))                    
                     prediction = torch.matmul(W,x)
-
+                    print("Pred dim: {}".format(prediction.size()))
                     
-                    #b_ij = torch.zeros(1,numPrevCaps,numNextCaps,1,requires_grad=True)
-                    b_ij = self.b_ij
+                    aux_pred = torch.tensor(prediction,requires_grad = False)                    
+                    b_ij = torch.zeros(1,numPrevCaps,numNextCaps,1,requires_grad=False)
+                    
                     if self.use_cuda:
                         b_ij.cuda()
 
@@ -71,13 +74,13 @@ class CapsuleLayer(nn.Module):
                     for i in range(num_itterations):
                         #print("Itteration: {}, B_ij:{} ,Size: {}".format(i,b_ij,b_ij.size()))
                         c_ij = F.softmax(b_ij,dim=2)
-                        # print("C_ij ize: {}".format(c_ij.size()))
+                        print("C_ij ize: {}".format(c_ij.size()))
                         
                         if use_cuda:
                             c_ij = c_ij.cuda()
 
                         c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
-                        # print("C_ij size: {} ".format(c_ij.size()))
+                        print("C_ij size: {} ".format(c_ij.size()))
                         # print("Prediction size: {}".format(prediction.size()))
                         
 
@@ -86,17 +89,38 @@ class CapsuleLayer(nn.Module):
                             c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
                             colledtion.append(c_analize)             
 
-
-                        s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
-                        # print("S_J: {}".format(s_j.size()))
-                        if self.use_cuda:
-                            s_j = s_j.cuda()
-
-                        v_j = self.squash(s_j)
-                        if self.use_cuda:
-                            v_j = v_j.cuda()
+                        
 
                         if i < num_itterations - 1:
+                            print("Prod size: {}".format((c_ij * aux_pred).size()))
+                            s_j = (c_ij * aux_pred).sum(dim=1,keepdim=True)
+                            print("S_J: {}".format(s_j.size()))
+                            if self.use_cuda:
+                                s_j = s_j.cuda()
+
+                            v_j = self.squash(s_j)
+                            if self.use_cuda:
+                                v_j = v_j.cuda()
+
+                            a_ij = torch.matmul(aux_pred.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
+                            a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
+                            if self.use_cuda:
+                                a_ij = a_ij.cuda()
+                            if self.use_cuda:
+                                b_ij = b_ij.cuda()
+                            b_ij = b_ij + a_ij
+                        
+                        elif i == num_itterations -1:
+                            print("Prod size: {}".format((c_ij * prediction).size()))
+                            s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
+                            print("S_J: {}".format(s_j.size()))
+                            if self.use_cuda:
+                                s_j = s_j.cuda()
+
+                            v_j = self.squash(s_j)
+                            if self.use_cuda:
+                                v_j = v_j.cuda()
+
                             a_ij = torch.matmul(prediction.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
                             a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
                             if self.use_cuda:
@@ -104,6 +128,7 @@ class CapsuleLayer(nn.Module):
                             if self.use_cuda:
                                 b_ij = b_ij.cuda()
                             b_ij = b_ij + a_ij
+                        
                     
                     if self.collectData:
                         self.collectedData.append(colledtion)
