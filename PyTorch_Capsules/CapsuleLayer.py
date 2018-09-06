@@ -7,7 +7,7 @@ import pandas as pd
 # from main import CUDA
 
 class CapsuleLayer(nn.Module):
-    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations = 4, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
+    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations = 3, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
         super().__init__()
         self.forward_type = None
         self.W = None
@@ -70,14 +70,14 @@ class CapsuleLayer(nn.Module):
                     for i in range(num_itterations):
                         #print("Itteration: {}, B_ij:{} ,Size: {}".format(i,b_ij,b_ij.size()))
                         c_ij = F.softmax(b_ij,dim=2)
-                        #print("C_ij:{} ,Size: {}".format(c_ij,c_ij.size()))
+                        # print("C_ij ize: {}".format(c_ij.size()))
                         
                         if use_cuda:
                             c_ij = c_ij.cuda()
 
                         c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
-                        #print("C_ij size: {} ".format(c_ij.size()))
-                        #print("Prediction size: {}".format(prediction.size()))
+                        # print("C_ij size: {} ".format(c_ij.size()))
+                        # print("Prediction size: {}".format(prediction.size()))
                         
 
                         if self.collectData:
@@ -87,6 +87,7 @@ class CapsuleLayer(nn.Module):
 
 
                         s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
+                        # print("S_J: {}".format(s_j.size()))
                         if self.use_cuda:
                             s_j = s_j.cuda()
 
