@@ -68,7 +68,9 @@ class CapsuleLayer(nn.Module):
                         colledtion = []
 
                     for i in range(num_itterations):
-                        c_ij = F.softmax(b_ij,dim=1)
+                        print("Itteration: {}, B_ij:{} ,Size: {}".format(i,b_ij,b_ij.size()))
+                        c_ij = F.softmax(b_ij,dim=2)
+                        print("C_ij:{} ,Size: {}".format(c_ij,c_ij.size()))
                         
                         if use_cuda:
                             c_ij = c_ij.cuda()
