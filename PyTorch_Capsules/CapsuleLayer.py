@@ -7,7 +7,7 @@ import pandas as pd
 # from main import CUDA
 
 class CapsuleLayer(nn.Module):
-    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations = 4, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
+    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations = 3, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
         super().__init__()
         self.forward_type = None
         self.W = None
@@ -53,8 +53,11 @@ class CapsuleLayer(nn.Module):
 
                 def forward_route(self,x):                    
                     batchSize = x.size(0)
+                    print("X before: {}".format(x.size()))
                     x = torch.stack([x]*numNextCaps,dim=2).unsqueeze(4)
                     W = torch.cat([self.W] * batchSize,dim=0)
+                    print("X dim: {}".format(x.size()))
+                    print("W dim: {}".format(W.size()))                    
                     prediction = torch.matmul(W,x)
                     print("x: {}".format(x.size()))
                     print("W: {}".format(W.size()))
@@ -88,6 +91,7 @@ class CapsuleLayer(nn.Module):
                             c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
                             colledtion.append(c_analize)             
 
+                        
 
                         s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
                         print("S_j: {}".format(s_j.size()))
@@ -107,6 +111,7 @@ class CapsuleLayer(nn.Module):
                             if self.use_cuda:
                                 b_ij = b_ij.cuda()
                             b_ij = b_ij + a_ij
+                        
                     
                     if self.collectData:
                         self.collectedData.append(colledtion)
