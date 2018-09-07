@@ -76,6 +76,7 @@ class CapsuleLayer(nn.Module):
                     for i in range(num_itterations):
                         # print("Itteration: {} ,b_ij Size: {}".format(i,b_ij.size()))
                         c_ij = F.softmax(b_ij,dim=2)
+                        # print(c_ij)
                         # print("C_ij Size: {}".format(c_ij.size()))
                         
                         if use_cuda:
@@ -99,6 +100,7 @@ class CapsuleLayer(nn.Module):
                         # print(v_j)
                         if i < num_itterations - 1:
                             s_j = (c_ij * pred_nograd).sum(dim=1,keepdim=True)
+                            # print(s_j)
                             # print("S_j: {}".format(s_j.size()))
                             if self.use_cuda:
                                 s_j = s_j.cuda()

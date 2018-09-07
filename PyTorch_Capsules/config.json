@@ -6,7 +6,7 @@
            "batch size":3,
            "epochs":1,
            "collection step":3,
-           "lr":0.0001
+           "lr":0.01
        },
        "cluster":{
            "cuda":true,
@@ -14,7 +14,7 @@
            "batch size":100,
            "epochs":3,
            "collection step":100,
-           "lr":0.0001
+           "lr":0.01
 
        }
    }
