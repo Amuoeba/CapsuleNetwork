@@ -56,26 +56,31 @@ class CapsuleLayer(nn.Module):
                     x = torch.stack([x]*numNextCaps,dim=2).unsqueeze(4)
                     W = torch.cat([self.W] * batchSize,dim=0)
                     prediction = torch.matmul(W,x)
+                    print("x: {}".format(x.size()))
+                    print("W: {}".format(W.size()))
+                    print("Prediction: {}".format(prediction.size()))
 
                     
-                    b_ij = torch.zeros(1,numPrevCaps,numNextCaps,1,requires_grad=True)
+                    b_ij = torch.zeros(batchSize,numPrevCaps,numNextCaps,1,requires_grad=False)
                     
                     if self.use_cuda:
                         b_ij.cuda()
-
                     
                     if self.collectData:
                         colledtion = []
 
                     for i in range(num_itterations):
-                        print("Itteration: {}, B_ij:{} ,Size: {}".format(i,b_ij,b_ij.size()))
+                        print("Itteration: {} ,b_ij Size: {}".format(i,b_ij.size()))
                         c_ij = F.softmax(b_ij,dim=2)
-                        print("C_ij:{} ,Size: {}".format(c_ij,c_ij.size()))
+                        print("C_ij Size: {}".format(c_ij.size()))
                         
                         if use_cuda:
                             c_ij = c_ij.cuda()
 
-                        c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
+                        #c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
+                        c_ij = torch.tensor(c_ij).unsqueeze(4)
+                        print("C_ij Size adter unsqueeze: {}".format(c_ij.size()))
+                        
                         
 
                         if self.collectData:
@@ -85,13 +90,15 @@ class CapsuleLayer(nn.Module):
 
 
                         s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
+                        print("S_j: {}".format(s_j.size()))
                         if self.use_cuda:
                             s_j = s_j.cuda()
 
                         v_j = self.squash(s_j)
                         if self.use_cuda:
                             v_j = v_j.cuda()
-
+                        print("V_j: {}".format(v_j.size()))
+                        print(v_j)
                         if i < num_itterations - 1:
                             a_ij = torch.matmul(prediction.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
                             a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
@@ -120,9 +127,10 @@ class CapsuleLayer(nn.Module):
 
 
     def squash(self,capsIn):
-        capsSquareNorm = (capsIn**2).sum(-1,keepdim=True)
+        #print("CAps in : {}".format(capsIn.size()))
+        capsSquareNorm = (capsIn**2).sum(-2,keepdim=True)
         capsSum = torch.sqrt(capsSquareNorm)
-        capsOut = capsSquareNorm*capsIn/(1+capsSquareNorm*capsSum)
+        capsOut = capsSquareNorm*capsIn/(1+capsSquareNorm*(capsSum + 1e-9))
         return capsOut
         
 
