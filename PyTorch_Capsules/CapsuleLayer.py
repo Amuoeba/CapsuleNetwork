@@ -65,6 +65,7 @@ class CapsuleLayer(nn.Module):
 
                     
                     b_ij = torch.zeros(batchSize,numPrevCaps,numNextCaps,1,requires_grad=False)
+                    pred_nograd = torch.tensor(prediction,requires_grad = False)
                     
                     if self.use_cuda:
                         b_ij.cuda()
@@ -93,24 +94,40 @@ class CapsuleLayer(nn.Module):
 
                         
 
-                        s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
-                        # print("S_j: {}".format(s_j.size()))
-                        if self.use_cuda:
-                            s_j = s_j.cuda()
 
-                        v_j = self.squash(s_j)
-                        if self.use_cuda:
-                            v_j = v_j.cuda()
                         # print("V_j: {}".format(v_j.size()))
                         # print(v_j)
                         if i < num_itterations - 1:
-                            a_ij = torch.matmul(prediction.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
+                            s_j = (c_ij * pred_nograd).sum(dim=1,keepdim=True)
+                            # print("S_j: {}".format(s_j.size()))
+                            if self.use_cuda:
+                                s_j = s_j.cuda()
+
+                            v_j = self.squash(s_j)
+                            if self.use_cuda:
+                                v_j = v_j.cuda()
+                            # print("V j: {}".format(v_j.size()))
+                            # print("Prediction: {}".format(pred_nograd.size()))
+                            # print("Prediction transpose: {}".format(pred_nograd.transpose(3,4).size()))
+                            a_ij = torch.matmul(pred_nograd.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
+                            # print("A_ij: {}".format(a_ij.size()))
                             a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
+                            # print("A ij after : {}".format(a_ij.size()))
                             if self.use_cuda:
                                 a_ij = a_ij.cuda()
                             if self.use_cuda:
                                 b_ij = b_ij.cuda()
                             b_ij = b_ij + a_ij
+
+                        elif i == num_itterations -1:
+                            s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
+                            # print("S_j: {}".format(s_j.size()))
+                            if self.use_cuda:
+                                s_j = s_j.cuda()
+
+                            v_j = self.squash(s_j)
+                            if self.use_cuda:
+                                v_j = v_j.cuda()
                         
                     
                     if self.collectData:
