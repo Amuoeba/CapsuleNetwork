@@ -46,14 +46,14 @@ class CapsuleNet(nn.Module):
         gamma = 0.5
         batch_size = x.size(0)
         
-        # print("X size: {}".format(x.size()))
+        print("##### X size: {}".format(x.size()))
         # print(x)
         capsule_act_len = torch.sqrt((x**2).sum(dim=2,keepdim=True))
         # print("aCT LEN size: {}".format(capsule_act_len.size()))
         # print(capsule_act_len)
 
-        first = F.relu(m_plus - capsule_act_len).view(batch_size,-1)
-        second = F.relu(capsule_act_len - m_minus).view(batch_size,-1)
+        first = F.relu(m_plus - capsule_act_len).view(batch_size,-1)**2
+        second = F.relu(capsule_act_len - m_minus).view(batch_size,-1)**2
         
         ml = lable * first + (1.0-lable) * gamma * second
         ml = ml.sum(dim=1).mean()
