@@ -11,7 +11,7 @@
        "cluster":{
            "cuda":true,
            "islice":null,
-           "batch size":100,
+           "batch size":50,
            "epochs":3,
            "collection step":100,
            "lr":0.0001
