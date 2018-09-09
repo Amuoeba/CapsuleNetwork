@@ -143,5 +143,5 @@ print("################################")
 print("Final test accuracy:",total_accuracy/no_examples)
 print("################################")
 
-exp_env.create_plots()
+exp_env.create_plots(verbose=True)
 

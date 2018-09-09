@@ -83,7 +83,7 @@ class PrepareExperiment():
                 actualname = "%s_%d.%s" % (basename, next(c),ext)
         return actualname
     
-    def create_plots(self):
+    def create_plots(self,verbose=False):
         """
         A class instance method that creates all the plots for the experiment. Data for the plots is read
         from the class instance fields.
@@ -92,15 +92,27 @@ class PrepareExperiment():
         Output:
             Experiment images in appropriate foldiers
         """
+
+        counter = 1
+        len_data = len(self.additional_collected_data)
+
         for data in self.additional_collected_data:
             image = data["image"]
-            coupling = data["coupling"]            
+            coupling = data["coupling"]
+
+            if verbose:
+                print("Ploting data: {}/{}".format(counter,len_data,len(image.data),len(coupling.data)),end="\n",flush=False)         
 
             reconst_image_name = "image_" + str(image.epoch) + "_"
-            self.plotter.plot_reconstruction_images(image,save=True,name=reconst_image_name,subdest=self.reconst_image_dest)
+            self.plotter.plot_reconstruction_images(image,save=True,name=reconst_image_name,subdest=self.reconst_image_dest,verbose=verbose)
             couple_image_name = "coupl_" + str(coupling.epoch) + "_BA" + str(coupling.batch)
-            self.plotter.plot_coupling_image(coupling,save=True,name=couple_image_name,subdest=self.coupling_image_dest)
+            self.plotter.plot_coupling_image(coupling,save=True,name=couple_image_name,subdest=self.coupling_image_dest,verbose=verbose)
 
+            counter += 1
+
+            
+
+        
         
         self.plot_train_data()
 
@@ -145,7 +157,7 @@ class ImagePlotter():
         self.current_coupling = 0
         self.name = name    
 
-    def plot_reconstruction_images(self,images,save=False,name="default",subdest=""):
+    def plot_reconstruction_images(self,images,save=False,name="default",subdest="",verbose=False):
         """
         Class instance method that plots the reconstructed images.
         Args:
@@ -162,8 +174,13 @@ class ImagePlotter():
         
         images = images.data
         fig = plt.figure()
+        len_data = len(images)
 
-        for j in range(10):            
+        for j in range(10):
+
+            if verbose:
+                print("Processing reconstruction example {}/{}".format(j+1,len_data),end="\r"),
+
             if not images[j] is None:
                 img_data =np.squeeze(images[j])
             else:
@@ -175,6 +192,9 @@ class ImagePlotter():
             plt.xticks(np.array([]))
             plt.yticks(np.array([]))
         
+        if verbose:
+            print()
+
         if save:
             # print(self.destination)
             # print(subdest)
@@ -184,7 +204,7 @@ class ImagePlotter():
         else:
             plt.show()
     
-    def plot_coupling_image(self,data,save=False,name="default",subdest=""):
+    def plot_coupling_image(self,data,save=False,name="default",subdest="",verbose=False):
         """
         A plotting function that represents the coupling coefficents in between two adjecent capsule
         layser. The function plots a (10,32,6,6) image for each itteration. The strenght of the coupling
@@ -200,7 +220,13 @@ class ImagePlotter():
             subdest: Subdirectory for saving the images
         """
         all_data = data.data
+        len_data = len(all_data)
+
+
         for i in range(10):
+            if verbose:
+                print("Processing coupling example: {}/{}".format(i+1,len_data),end="\r")
+
             if not all_data[i] is None:
                 pltData =  np.array(all_data[i])
                 
@@ -249,6 +275,9 @@ class ImagePlotter():
                     self.current_coupling += 1
                 else:  
                     plt.show()
+        
+        if verbose:
+            print()
             
         
 
