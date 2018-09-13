@@ -33,7 +33,7 @@ class CapsuleLayer(nn.Module):
                 u = [capsule(x) for capsule in self.capsules]
                 # print("U2 size:",u[0].size())
                 u = torch.stack(u,4)
-                # print("U2 size:",u.size())
+                # print("U3 size:",u.size())
                 u = u.view(x.size(0),32*6*6,-1)
 
                 assert u.size() == torch.Size([x.size(0),1152,8])
@@ -50,7 +50,7 @@ class CapsuleLayer(nn.Module):
                 nextCapsDim = nextCapsDim
 
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
-                self.biases = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,1))
+                # self.biases = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,1))
 
                 def forward_route(self,x):                    
                     batchSize = x.size(0)
@@ -59,7 +59,7 @@ class CapsuleLayer(nn.Module):
                     W = torch.cat([self.W] * batchSize,dim=0)
                     # print("X dim: {}".format(x.size()))
                     # print("W dim: {}".format(W.size()))                    
-                    prediction = torch.matmul(W,x) + self.biases
+                    prediction = torch.matmul(W,x) #+ self.biases
                     # print("x: {}".format(x.size()))
                     # print("W: {}".format(W.size()))
                     # print("Prediction: {}".format(prediction.size()))
@@ -93,6 +93,7 @@ class CapsuleLayer(nn.Module):
                         if self.collectData:
                             c_analize = torch.tensor(c_ij).cpu().squeeze().detach().numpy()
                             c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
+                            # print("C_analize shape: {}".format(c_analize.shape))
                             colledtion.append(c_analize)             
 
                         
