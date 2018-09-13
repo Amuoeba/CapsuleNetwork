@@ -52,6 +52,8 @@ class CapsuleLayer(nn.Module):
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
                 self.biases = nn.Parameter(torch.zeros(1,numPrevCaps,numNextCaps,nextCapsDim,1))
 
+                
+
                 def forward_route(self,x):                    
                     batchSize = x.size(0)
                     # print("X before: {}".format(x.size()))
@@ -64,6 +66,7 @@ class CapsuleLayer(nn.Module):
                     # print("W: {}".format(W.size()))
                     # print("Prediction: {}".format(prediction.size()))
 
+                    # print(self.biases)
                     
                     b_ij = torch.zeros(batchSize,numPrevCaps,numNextCaps,1,requires_grad=False)
                     pred_nograd = torch.tensor(prediction,requires_grad = False)
