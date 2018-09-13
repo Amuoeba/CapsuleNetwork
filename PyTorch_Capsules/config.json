@@ -3,7 +3,7 @@
        "laptop":{
            "cuda":false,
            "islice":10,
-           "batch size":3,
+           "batch size":2,
            "epochs":1,
            "collection step":3,
            "lr":0.0001

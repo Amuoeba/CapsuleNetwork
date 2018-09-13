@@ -56,8 +56,11 @@ class CapsuleNet(nn.Module):
         second = F.relu(capsule_act_len - m_minus).view(batch_size,-1)**2
         
         ml = lable * first + (1.0-lable) * gamma * second
+        # print("Margin loss shape: {}".format(ml.size()))
+        # print(ml)
         ml = ml.sum(dim=1).mean()
-        
+        # print("Margin loss shape: {}".format(ml.size()))
+        # print(ml)
         return ml
     
     def reconstruction_loss(self, x, target):
@@ -66,6 +69,8 @@ class CapsuleNet(nn.Module):
         loss = self.mseLoss(x.view(x.size(0),-1),target.view(target.size(0),-1))
         # print("MSElosss:",loss)
         # print("!!!!!!!!!!!!1 Reconstruction loss end !!!!!!!!!!!!!!!!!")
+        # print("reconst loss: {}".format(loss.size()))
+        print(loss)
         return loss * 0.0005
 
     
