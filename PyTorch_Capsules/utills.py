@@ -51,13 +51,17 @@ class PrepareExperiment():
         os.makedirs(img)   
         os.makedirs(img+img_reconst)
         os.makedirs(img+img_coupling)
-        os.makedirs(plots)
+        os.makedirs(plots)        
+        
         
         self.expHome = dirname+"/"
         self.reconst_image_dest = img_reconst+"/"
         self.coupling_image_dest = img_coupling+"/"
         self.plots = plots+"/"
-        self.image_dest = img+"/" 
+        self.image_dest = img+"/"
+
+        for i in range(10):
+            os.makedirs(img+self.coupling_image_dest+str(i))
 
     @staticmethod
     def unique_name(basename, ext=None, makedir=False):
@@ -271,7 +275,7 @@ class ImagePlotter():
                 plt.colorbar(im)
 
                 if save:
-                    plt.savefig(self.destination + subdest + name + "_ID" +str(self.current_coupling) +"_"+ str(i) + ".png")
+                    plt.savefig(self.destination + subdest + str(i) + "/" + name + "_ID" +str(self.current_coupling) +"_"+ str(i) + ".png")
                     self.current_coupling += 1
                 else:  
                     plt.show()
