@@ -37,6 +37,12 @@ class PrepareExperiment():
         self.plotter = ImagePlotter(self.image_dest)
         
     
+    def flush_collected_data(self):
+        """
+        Clears the data from the collected data bufer
+        """
+        self.additional_collected_data = []
+
     def _prepare_foldiers(self):
         """
         This method prepares the foldier structure for the experiments
@@ -205,6 +211,7 @@ class ImagePlotter():
             # print(name)
             fig.savefig(self.destination + subdest + name + str(self.current_reconst) + ".png")
             self.current_reconst += 1
+            fig.clf()
         else:
             plt.show()
     
@@ -277,6 +284,7 @@ class ImagePlotter():
                 if save:
                     plt.savefig(self.destination + subdest + str(i) + "/" + name + "_ID" +str(self.current_coupling) +"_"+ str(i) + ".png")
                     self.current_coupling += 1
+                    plt.clf()
                 else:  
                     plt.show()
         
