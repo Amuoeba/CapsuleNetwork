@@ -137,7 +137,7 @@ class CapsuleLayer(nn.Module):
 
                         elif i == num_itterations -1:
                             s_j = (c_ij * prediction).sum(dim=1,keepdim=True) + self.biases
-                            print(self.biases)
+                            # print(self.biases)
                             # print("S_j: {}".format(s_j.size()))
                             if self.use_cuda:
                                 s_j = s_j.cuda()
