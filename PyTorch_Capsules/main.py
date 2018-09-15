@@ -117,12 +117,14 @@ for epoch in range(no_epochs):
 
 
 total_test_loss = 0
-no_examples = 0
+no_batches = 0
 total_accuracy = 0
 with torch.no_grad():
     for batch_number, data in islice(enumerate(mnist.test_loader),None,islice_range,None):
         image_batch = data[0]
         target_batch = data[1]
+        no_examples = image_batch.size(0)
+        #print("Image batch size: {}".format(image_batch.size()))
 
         lable = torch.eye(10).index_select(dim=0,index=target_batch)
 
@@ -134,13 +136,13 @@ with torch.no_grad():
 
         loss = caps_net.loss(out,decoded,lable,image_batch)
         total_test_loss += loss[0]
-        accuracy = sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size)
-        no_examples += batch_size
+        accuracy = sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(no_examples)
+        no_batches += 1
         total_accuracy += accuracy        
         print("Batch:",batch_number,"Test accuracy:",accuracy)
 
 print("################################")
-print("Final test accuracy:",total_accuracy/no_examples)
+print("Final test accuracy:",total_accuracy/no_batches)
 print("################################")
 
 exp_env.create_plots(verbose=True)

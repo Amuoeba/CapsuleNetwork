@@ -50,7 +50,7 @@ class CapsuleLayer(nn.Module):
                 nextCapsDim = nextCapsDim
 
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
-                self.biases = nn.Parameter(torch.zeros(1,numPrevCaps,numNextCaps,nextCapsDim,1))
+                self.biases = nn.Parameter(torch.zeros(1,1,numNextCaps,nextCapsDim,1))
 
                 
 
@@ -61,7 +61,7 @@ class CapsuleLayer(nn.Module):
                     W = torch.cat([self.W] * batchSize,dim=0)
                     # print("X dim: {}".format(x.size()))
                     # print("W dim: {}".format(W.size()))                    
-                    prediction = torch.matmul(W,x) + self.biases
+                    prediction = torch.matmul(W,x)
                     # print("x: {}".format(x.size()))
                     # print("W: {}".format(W.size()))
                     # print("Prediction: {}".format(prediction.size()))
@@ -136,7 +136,8 @@ class CapsuleLayer(nn.Module):
                             b_ij = b_ij + a_ij
 
                         elif i == num_itterations -1:
-                            s_j = (c_ij * prediction).sum(dim=1,keepdim=True)
+                            s_j = (c_ij * prediction).sum(dim=1,keepdim=True) + self.biases
+                            print(self.biases)
                             # print("S_j: {}".format(s_j.size()))
                             if self.use_cuda:
                                 s_j = s_j.cuda()
