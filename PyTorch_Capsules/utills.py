@@ -147,7 +147,7 @@ class PrepareExperiment():
         margin_graph.savefig(self.plots+"margin_plot.png")
         reconstruction_graph.savefig(self.plots+"reconst_plot.png")
 
-        plt.clf()
+        
 
     
 

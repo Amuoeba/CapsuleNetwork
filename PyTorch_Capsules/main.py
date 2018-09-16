@@ -113,6 +113,9 @@ for epoch in range(no_epochs):
             coupling_states = utills.CollectedData("coupling_coefficients",coupling_states,epoch,batch_number)
             exp_env.additional_collected_data.append({"image":images,"coupling":coupling_states})
 
+            exp_env.create_plots(verbose=True)
+            exp_env.flush_collected_data()
+
 
 
 
@@ -145,5 +148,5 @@ print("################################")
 print("Final test accuracy:",total_accuracy/no_batches)
 print("################################")
 
-exp_env.create_plots(verbose=True)
+
 
