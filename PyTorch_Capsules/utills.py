@@ -147,6 +147,8 @@ class PrepareExperiment():
         margin_graph.savefig(self.plots+"margin_plot.png")
         reconstruction_graph.savefig(self.plots+"reconst_plot.png")
 
+        plt.clf()
+
     
 
 
@@ -212,6 +214,7 @@ class ImagePlotter():
             fig.savefig(self.destination + subdest + name + str(self.current_reconst) + ".png")
             self.current_reconst += 1
             fig.clf()
+            plt.clf()
         else:
             plt.show()
     
