@@ -71,7 +71,7 @@ class CapsuleNet(nn.Module):
         # print("!!!!!!!!!!!!1 Reconstruction loss end !!!!!!!!!!!!!!!!!")
         # print("reconst loss: {}".format(loss.size()))
         print(loss)
-        return loss * 0.0005
+        return loss * 0.005
 
     
     def set_collectData(self,value):

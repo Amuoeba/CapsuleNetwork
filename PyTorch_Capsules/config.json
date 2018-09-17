@@ -12,7 +12,7 @@
            "cuda":true,
            "islice":null,
            "batch size":128,
-           "epochs":20,
+           "epochs":40,
            "collection step":100,
            "lr":0.00001
 
