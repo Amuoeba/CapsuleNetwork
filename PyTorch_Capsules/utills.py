@@ -215,6 +215,7 @@ class ImagePlotter():
             self.current_reconst += 1
             fig.clf()
             plt.clf()
+            plt.close("all")
         else:
             plt.show()
     
@@ -288,6 +289,7 @@ class ImagePlotter():
                     plt.savefig(self.destination + subdest + str(i) + "/" + name + "_ID" +str(self.current_coupling) +"_"+ str(i) + ".png")
                     self.current_coupling += 1
                     plt.clf()
+                    plt.close("all")
                 else:  
                     plt.show()
         
