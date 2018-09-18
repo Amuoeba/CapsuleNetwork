@@ -153,9 +153,9 @@ with torch.no_grad():
             image_batch = image_batch.cuda()
             lable = lable.cuda()
 
-        out, decoded, masked = caps_net(image_batch)
+        out, decoded, masked = caps_eval_model(image_batch)
 
-        loss = caps_net.loss(out,decoded,lable,image_batch)
+        loss = caps_eval_model.loss(out,decoded,lable,image_batch)
         total_test_loss += loss[0]
         accuracy = sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(no_examples)
         no_batches += 1
