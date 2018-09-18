@@ -259,6 +259,7 @@ class ImagePlotter():
 
             if not all_data[i] is None:
                 pltData =  np.array(all_data[i])
+                # print("PLTDATA SIZE: ",pltData.shape )
                 
                 plt.figure(figsize=(30,30))
 
@@ -272,7 +273,7 @@ class ImagePlotter():
                 loffset = 4/X_max
                 koffset = 2/Y_max
 
-                coppies = pltData.shape[0]
+                coppies = pltData.shape[0]                
                 spacing = X_max + X_max * loffset + 1
 
                 ax = plt.subplot(111)
@@ -294,7 +295,7 @@ class ImagePlotter():
                             y_start = k + k*koffset
                             y_stop = k+1 + k*koffset
 
-                            
+                            # print("EXTENT:",[x_start,x_stop,y_start,y_stop])
                             im = ax.imshow(da,cmap="binary",extent=[x_start,x_stop,y_start,y_stop],vmin=range_min, vmax=range_max)             
 
                 plt.suptitle('Coupling coefficients for number {}'.format(i), fontsize=50)

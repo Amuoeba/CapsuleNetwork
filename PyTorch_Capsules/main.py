@@ -107,8 +107,8 @@ for epoch in range(no_epochs):
         
         if batch_number % collection_step == 0:
             all_images = decoded.cpu().detach().numpy()
-            all_coupling_states =np.squeeze(np.array(caps_net.secondaryCapsules.collectedData)).swapaxes(0,1)
-            # print("Shape:",all_coupling_states.shape)
+            all_coupling_states =np.squeeze(np.array(caps_net.secondaryCapsules.collectedData),axis=0).swapaxes(0,1)
+            # print("Shape #########:",all_coupling_states.shape)
             indices = utills.CollectedData.find_first_occurance_index(target_batch)
            
 
