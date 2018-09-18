@@ -141,6 +141,9 @@ with torch.no_grad():
     caps_eval_model = CapsuleNet(use_cuda=CUDA)
     caps_eval_model.load_state_dict(exp_env.best_model)
 
+    if CUDA:
+        caps_eval_model.cuda()
+
     for batch_number, data in islice(enumerate(mnist.test_loader),None,islice_range,None):
         image_batch = data[0]
         target_batch = data[1]
