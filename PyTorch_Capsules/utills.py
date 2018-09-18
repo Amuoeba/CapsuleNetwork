@@ -6,6 +6,7 @@ import seaborn as sb
 import os
 import sys
 import itertools
+import torch
 
 
 plt.switch_backend('agg')
@@ -30,11 +31,14 @@ class PrepareExperiment():
         self.reconst_image_dest = None
         self.coupling_image_dest = None
         self.plots = None
+        self.model_dest = None
         self._prepare_foldiers()
         self.train_data = pd.DataFrame({"epoch":[],"batch":[],"margin-loss":[],"reconstruction-loss":[],"total-loss":[],"accuracy":[]})
         self.additional_collected_data = []
 
         self.plotter = ImagePlotter(self.image_dest)
+        self.best_model = None
+       
         
     
     def flush_collected_data(self):
@@ -48,16 +52,17 @@ class PrepareExperiment():
         This method prepares the foldier structure for the experiments
         """
         dirname = self.unique_name(self.home + "/experiments/experiment",makedir=True)
-        img=dirname+"/images"
+        img = dirname+"/images"
         img_reconst = "/reconstructions"
         img_coupling = "/coupling"
-        
+        best_models = dirname+ "/models"        
         plots = dirname+"/plots"       
         os.makedirs(dirname)
-        os.makedirs(img)   
+        os.makedirs(img)
         os.makedirs(img+img_reconst)
         os.makedirs(img+img_coupling)
-        os.makedirs(plots)        
+        os.makedirs(plots)
+        os.makedirs(best_models)       
         
         
         self.expHome = dirname+"/"
@@ -65,6 +70,7 @@ class PrepareExperiment():
         self.coupling_image_dest = img_coupling+"/"
         self.plots = plots+"/"
         self.image_dest = img+"/"
+        self.model_dest = best_models+"/"
 
         for i in range(10):
             os.makedirs(img+self.coupling_image_dest+str(i))
@@ -118,12 +124,7 @@ class PrepareExperiment():
             couple_image_name = "coupl_" + str(coupling.epoch) + "_BA" + str(coupling.batch)
             self.plotter.plot_coupling_image(coupling,save=True,name=couple_image_name,subdest=self.coupling_image_dest,verbose=verbose)
 
-            counter += 1
-
-            
-
-        
-        
+            counter += 1       
         self.plot_train_data()
 
 
@@ -147,6 +148,20 @@ class PrepareExperiment():
         margin_graph.savefig(self.plots+"margin_plot.png")
         reconstruction_graph.savefig(self.plots+"reconst_plot.png")
 
+    def save_best_model(self,model):
+        model_name = "model_epch_"+str(model.epoch)+"_batch_"+str(model.batch)
+        torch.save(model.model,self.model_dest+model_name)
+        self.best_model = model.model
+
+        with open(self.model_dest+model_name+".txt","w+") as f:
+            f.write(model_name+"\n")
+            f.write(str(model.epoch)+"\n")
+            f.write(str(model.batch)+"\n")
+            f.write("Total loss: {} \n".format(model.total_loss))
+            f.write("Margin loss: {} \n".format(model.margin_loss))
+            f.write("Reconstruction loss: {} \n".format(model.reconstruction_loss))
+
+        return None
         
 
     
@@ -375,3 +390,16 @@ class InitConfig():
             sys.exit(1)
 
         return config
+
+class BestModelLog():
+    """
+    Class for saving the best model
+    """
+
+    def __init__(self,model,epoch,batch,total_loss,margin_loss,reconstruction_loss):
+        self.model = model
+        self.epoch = epoch
+        self.batch = batch
+        self.total_loss = total_loss
+        self.margin_loss = margin_loss
+        self.reconstruction_loss = reconstruction_loss

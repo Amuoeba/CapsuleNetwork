@@ -10,6 +10,7 @@ import numpy as np
 from CapsNetwork import CapsuleNet
 import utills
 from data_reader import Mnist
+import math
 
 
 
@@ -46,6 +47,9 @@ mnist = Mnist(batch_size)
 optimizer = Adam(caps_net.parameters(),lr=learning_rate)
 
 caps_net.train()
+
+best_loss = math.inf
+
 for epoch in range(no_epochs):    
     train_loss = 0
     print("Epoch:",epoch)
@@ -84,9 +88,19 @@ for epoch in range(no_epochs):
         print("Epoch",epoch,"Batch:",batch_number)
         # print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
         # print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
-        print("Train loss",train_loss)
+        print("Epoch loss:",train_loss)
+        print("Combined loss:",total_loss)
         print("Margin loss:", margin_loss, "Reconstruction loss:", reconstruction_loss)
         print("Train accuracy:", train_accuracy)
+
+        #save model if its combined loss is less than current minimum
+        if total_loss < best_loss:
+            print("FOUND BETTER MODEL")
+            model_to_save = utills.BestModelLog(caps_net.state_dict(),epoch,batch_number,total_loss,margin_loss,reconstruction_loss) 
+            exp_env.save_best_model(model_to_save)
+            best_loss = total_loss
+            
+        
 
         cur_df = pd.DataFrame({"epoch":[int(epoch)],"batch":[int(batch_number)],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]})
         exp_env.train_data = exp_env.train_data.append(cur_df)        
@@ -123,6 +137,10 @@ total_test_loss = 0
 no_batches = 0
 total_accuracy = 0
 with torch.no_grad():
+
+    caps_eval_model = CapsuleNet(use_cuda=CUDA)
+    caps_eval_model.load_state_dict(exp_env.best_model)
+
     for batch_number, data in islice(enumerate(mnist.test_loader),None,islice_range,None):
         image_batch = data[0]
         target_batch = data[1]
