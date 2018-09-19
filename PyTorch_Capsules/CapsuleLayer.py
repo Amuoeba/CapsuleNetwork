@@ -81,7 +81,10 @@ class CapsuleLayer(nn.Module):
                     # print("---------- ROUTING START ----------")
                     for i in range(num_itterations):
                         # print("Itteration: {} ,b_ij Size: {}".format(i,b_ij.size()))
+
+                        print("Bij CUDA: {}".format(b_ij.is_cuda))
                         c_ij = F.softmax(b_ij,dim=2)
+                        print("Cij FIRST CUDA: {}".format(c_ij.is_cuda))
                         # print(c_ij)
                         # print("C_ij Size: {}".format(c_ij.size()))
                         
