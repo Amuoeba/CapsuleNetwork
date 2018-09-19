@@ -52,8 +52,8 @@ class CapsuleLayer(nn.Module):
                 nextCapsDim = nextCapsDim
 
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
-                #self.biases = nn.Parameter(torch.zeros(1,1,numNextCaps,nextCapsDim,1))
-
+                self.biases = nn.Parameter(torch.zeros(1,1,numNextCaps,nextCapsDim,1))
+                #self.b_ij_learn = nn.Parameter(torch.zeros(batchSize,numPrevCaps,numNextCaps,1))
                 
 
                 def forward_route(self,x):                    
@@ -138,7 +138,7 @@ class CapsuleLayer(nn.Module):
                             b_ij = b_ij + a_ij
 
                         elif i == num_itterations -1:
-                            s_j = (c_ij * prediction).sum(dim=1,keepdim=True) #+ self.biases
+                            s_j = (c_ij * prediction).sum(dim=1,keepdim=True) + self.biases
                             # print(self.biases)
                             # print("S_j: {}".format(s_j.size()))
                             if self.use_cuda:
