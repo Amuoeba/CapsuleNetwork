@@ -1,18 +1,21 @@
 {
    "type":{
        "laptop":{
+           "test_rotate":true,
            "cuda":false,
            "islice":10,
            "batch size":2,
            "epochs":1,
            "collection step":3,
            "lr":0.0001
+           
        },
        "cluster":{
+           "test_rotate":true,
            "cuda":true,
            "islice":null,
            "batch size":128,
-           "epochs":5,
+           "epochs":1,
            "collection step":100,
            "lr":0.0001
        }

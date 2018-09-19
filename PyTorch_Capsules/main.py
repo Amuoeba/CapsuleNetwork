@@ -26,6 +26,7 @@ batch_size = config["batch size"]
 no_epochs = config["epochs"]
 collection_step = config["collection step"]
 learning_rate = config["lr"]
+rotate = config["test_rotate"]
 
 # Data collection, image representations and plotting
 exp_env = utills.PrepareExperiment(1)
@@ -41,7 +42,7 @@ params = sum([np.prod(p.size()) for p in model_parameters])
 print("No. parameters: ",params)
 
 # Instantiating the train loader
-mnist = Mnist(batch_size)
+mnist = Mnist(batch_size,rotate)
 
 # instantiate the optimizer
 optimizer = Adam(caps_net.parameters(),lr=learning_rate)
@@ -146,9 +147,10 @@ with torch.no_grad():
 
     for batch_number, data in islice(enumerate(mnist.test_loader),None,islice_range,None):
         image_batch = data[0]
+        
         target_batch = data[1]
         no_examples = image_batch.size(0)
-        #print("Image batch size: {}".format(image_batch.size()))
+        print("Image batch size: {}".format(image_batch.size()))
 
         lable = torch.eye(10).index_select(dim=0,index=target_batch)
 
