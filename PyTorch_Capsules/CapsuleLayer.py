@@ -9,7 +9,7 @@ import pandas as pd
 # from main import CUDA
 
 class CapsuleLayer(nn.Module):
-    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations =1, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
+    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations =3, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
         super().__init__()
         self.forward_type = None
         self.W = None
@@ -82,31 +82,20 @@ class CapsuleLayer(nn.Module):
                     for i in range(num_itterations):
                         # print("Itteration: {} ,b_ij Size: {}".format(i,b_ij.size()))
 
-                        print("Bij CUDA: {}".format(b_ij.is_cuda))
-                        print("Self.usecuda: {}".format(self.use_cuda))
                         c_ij = F.softmax(b_ij,dim=2)
-                        print("Cij FIRST CUDA: {}".format(c_ij.is_cuda))
+                        
                         # print(c_ij)
-                        # print("C_ij Size: {}".format(c_ij.size()))
-                        
-                        
-                        # if use_cuda:
-                        #     c_ij = c_ij.cuda()
+                        # print("C_ij Size: {}".format(c_ij.size()))                   
 
                         #c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
                         c_ij = torch.tensor(c_ij).unsqueeze(4)
-                        # print("C_ij Size adter unsqueeze: {}".format(c_ij.size()))
+                        # print("C_ij Size adter unsqueeze: {}".format(c_ij.size()))        
                         
-                        
-
                         if self.collectData:
                             c_analize = torch.tensor(c_ij).cpu().squeeze().detach().numpy()
                             c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
                             # print("C_analize shape: {}".format(c_analize.shape))
                             colledtion.append(c_analize)             
-
-                        
-
 
                         # print("V_j: {}".format(v_j.size()))
                         # print(v_j)
@@ -118,12 +107,8 @@ class CapsuleLayer(nn.Module):
                             # print(s_j)
                             # print("S_j: {}".format(s_j.size()))
                             # print(s_j)
-                            # if self.use_cuda:
-                            #     s_j = s_j.cuda()
 
                             v_j = self.squash(s_j)
-                            # if self.use_cuda:
-                            #     v_j = v_j.cuda()
                             # print("V j: {}".format(v_j.size()))
                             # print("Prediction: {}".format(pred_nograd.size()))
                             # print("Prediction transpose: {}".format(pred_nograd.transpose(3,4).size()))
@@ -134,30 +119,14 @@ class CapsuleLayer(nn.Module):
                             # a_ij = a_ij.squeeze(4).mean(dim=0,keepdim=True)
                             a_ij = a_ij.squeeze(4)
                             # print("B ij size : {}".format(b_ij.size()))
-                            
-                            # if self.use_cuda:
-                            #     a_ij = a_ij.cuda()
-                            # if self.use_cuda:
-                            #     b_ij = b_ij.cuda()
                             b_ij = b_ij + a_ij
 
                         elif i == num_itterations -1:
-
-                            print("Cij CUDA: {}".format(c_ij.is_cuda))
-                            print("Prediction CUDA: {}".format(prediction.is_cuda))
-                            print("Biases CUDA: {}".format(self.biases.is_cuda))
-
                             s_j = (c_ij * prediction).sum(dim=1,keepdim=True) + self.biases
                             # print(self.biases)
                             # print("Biases: {}".format(self.biases.size()))
                             # print("S_j: {}".format(s_j.size()))
-                            # if self.use_cuda:
-                            #     s_j = s_j.cuda()
-
-                            v_j = self.squash(s_j)
-                            # if self.use_cuda:
-                            #     v_j = v_j.cuda()
-                        
+                            v_j = self.squash(s_j)                        
                     
                     if self.collectData:
                         self.collectedData.append(colledtion)
