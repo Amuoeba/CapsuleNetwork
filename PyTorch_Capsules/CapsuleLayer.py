@@ -64,8 +64,6 @@ class CapsuleLayer(nn.Module):
                     # print("X dim: {}".format(x.size()))
                     # print("W dim: {}".format(W.size()))                    
                     prediction = torch.matmul(W,x)
-                    if use_cuda:
-                        prediction.cuda()
                     # print("x: {}".format(x.size()))
                     # print("W: {}".format(W.size()))
                     # print("Prediction: {}".format(prediction.size()))
@@ -140,6 +138,11 @@ class CapsuleLayer(nn.Module):
                             b_ij = b_ij + a_ij
 
                         elif i == num_itterations -1:
+
+                            print("Cij CUDA: {}".format(c_ij.is_cuda))
+                            print("Prediction CUDA: {}".format(prediction.is_cuda))
+                            print("Biases CUDA: {}".format(self.biases.is_cuda))
+
                             s_j = (c_ij * prediction).sum(dim=1,keepdim=True) + self.biases
                             # print(self.biases)
                             # print("Biases: {}".format(self.biases.size()))
