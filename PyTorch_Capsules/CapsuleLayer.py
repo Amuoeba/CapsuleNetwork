@@ -9,7 +9,7 @@ import pandas as pd
 # from main import CUDA
 
 class CapsuleLayer(nn.Module):
-    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations = 3, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
+    def __init__(self, capsule_dim = 8, in_channels = 256, out_channels = 32, ker_size = 9,stride = 2, routing = False, routing_type = "Dinamic",num_itterations =1, numPrevCaps = 1152, prevCapsDim = 8, numNextCaps = 10, nextCapsDim = 16 ,use_cuda=False):
         super().__init__()
         self.forward_type = None
         self.W = None
@@ -140,6 +140,7 @@ class CapsuleLayer(nn.Module):
                         elif i == num_itterations -1:
                             s_j = (c_ij * prediction).sum(dim=1,keepdim=True) + self.biases
                             # print(self.biases)
+                            # print("Biases: {}".format(self.biases.size()))
                             # print("S_j: {}".format(s_j.size()))
                             if self.use_cuda:
                                 s_j = s_j.cuda()
