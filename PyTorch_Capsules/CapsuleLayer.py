@@ -86,8 +86,8 @@ class CapsuleLayer(nn.Module):
                         # print("C_ij Size: {}".format(c_ij.size()))
                         
                         
-                        if use_cuda:
-                            c_ij = c_ij.cuda()
+                        # if use_cuda:
+                        #     c_ij = c_ij.cuda()
 
                         #c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
                         c_ij = torch.tensor(c_ij).unsqueeze(4)
@@ -114,12 +114,12 @@ class CapsuleLayer(nn.Module):
                             # print(s_j)
                             # print("S_j: {}".format(s_j.size()))
                             # print(s_j)
-                            if self.use_cuda:
-                                s_j = s_j.cuda()
+                            # if self.use_cuda:
+                            #     s_j = s_j.cuda()
 
                             v_j = self.squash(s_j)
-                            if self.use_cuda:
-                                v_j = v_j.cuda()
+                            # if self.use_cuda:
+                            #     v_j = v_j.cuda()
                             # print("V j: {}".format(v_j.size()))
                             # print("Prediction: {}".format(pred_nograd.size()))
                             # print("Prediction transpose: {}".format(pred_nograd.transpose(3,4).size()))
@@ -131,10 +131,10 @@ class CapsuleLayer(nn.Module):
                             a_ij = a_ij.squeeze(4)
                             # print("B ij size : {}".format(b_ij.size()))
                             
-                            if self.use_cuda:
-                                a_ij = a_ij.cuda()
-                            if self.use_cuda:
-                                b_ij = b_ij.cuda()
+                            # if self.use_cuda:
+                            #     a_ij = a_ij.cuda()
+                            # if self.use_cuda:
+                            #     b_ij = b_ij.cuda()
                             b_ij = b_ij + a_ij
 
                         elif i == num_itterations -1:
@@ -142,12 +142,12 @@ class CapsuleLayer(nn.Module):
                             # print(self.biases)
                             # print("Biases: {}".format(self.biases.size()))
                             # print("S_j: {}".format(s_j.size()))
-                            if self.use_cuda:
-                                s_j = s_j.cuda()
+                            # if self.use_cuda:
+                            #     s_j = s_j.cuda()
 
                             v_j = self.squash(s_j)
-                            if self.use_cuda:
-                                v_j = v_j.cuda()
+                            # if self.use_cuda:
+                            #     v_j = v_j.cuda()
                         
                     
                     if self.collectData:
