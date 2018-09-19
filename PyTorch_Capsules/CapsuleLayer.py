@@ -33,9 +33,9 @@ class CapsuleLayer(nn.Module):
             #   - Transform the tensor so that we only have individual 8D capsules (32*6*6 = 1152) in each batch --> [batch,1152,8]
             def forward_no_route(self,x):
                 u = [capsule(x) for capsule in self.capsules]
-                # print("U2 size:",u[0].size())
+                print("U2 size:",u[0].size())
                 u = torch.stack(u,4)
-                # print("U3 size:",u.size())
+                print("U3 size:",u.size())
                 u = u.view(x.size(0),32*6*6,-1)
 
                 assert u.size() == torch.Size([x.size(0),1152,8])
@@ -58,16 +58,15 @@ class CapsuleLayer(nn.Module):
 
                 def forward_route(self,x):                    
                     batchSize = x.size(0)
-                    # print("X before: {}".format(x.size()))
+                    print("X before: {}".format(x.size()))
                     x = torch.stack([x]*numNextCaps,dim=2).unsqueeze(4)
                     W = torch.cat([self.W] * batchSize,dim=0)
-                    # print("X dim: {}".format(x.size()))
+                    print("X dim: {}".format(x.size()))
                     # print("W dim: {}".format(W.size()))                    
                     prediction = torch.matmul(W,x)
                     # print("x: {}".format(x.size()))
                     # print("W: {}".format(W.size()))
                     # print("Prediction: {}".format(prediction.size()))
-
                     # print(self.biases)
                     
                     b_ij = torch.zeros(batchSize,numPrevCaps,numNextCaps,1,requires_grad=False)
@@ -81,19 +80,19 @@ class CapsuleLayer(nn.Module):
                     # print("---------- ROUTING START ----------")
                     for i in range(num_itterations):
                         # print("Itteration: {} ,b_ij Size: {}".format(i,b_ij.size()))
-
-                        c_ij = F.softmax(b_ij,dim=2)
-                        
+                        c_ij = F.softmax(b_ij,dim=2)                        
                         # print(c_ij)
-                        # print("C_ij Size: {}".format(c_ij.size()))                   
-
+                        # print("C_ij Size: {}".format(c_ij.size()))
                         #c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
                         c_ij = torch.tensor(c_ij).unsqueeze(4)
-                        # print("C_ij Size adter unsqueeze: {}".format(c_ij.size()))        
+                        print("C_ij Size adter unsqueeze: {}".format(c_ij.size()))      
                         
                         if self.collectData:
-                            c_analize = torch.tensor(c_ij).cpu().squeeze().detach().numpy()
-                            c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
+                            c_analize = torch.tensor(c_ij.squeeze())
+                            c_analize = c_analize.view(batchSize,32,6,6,10)
+                            c_analize = c_analize.permute(0,4,1,2,3)
+                            c_analize = c_analize.detach().numpy()
+                            #c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
                             # print("C_analize shape: {}".format(c_analize.shape))
                             colledtion.append(c_analize)             
 
