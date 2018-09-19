@@ -91,7 +91,7 @@ class CapsuleLayer(nn.Module):
                             c_analize = torch.tensor(c_ij.squeeze())
                             c_analize = c_analize.view(batchSize,32,6,6,10)
                             c_analize = c_analize.permute(0,4,1,2,3)
-                            c_analize = c_analize.detach().numpy()
+                            c_analize = c_analize.cpu().detach().numpy()
                             #c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
                             # print("C_analize shape: {}".format(c_analize.shape))
                             colledtion.append(c_analize)             
