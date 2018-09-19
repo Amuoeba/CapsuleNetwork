@@ -74,7 +74,7 @@ class CapsuleLayer(nn.Module):
                     pred_nograd = torch.tensor(prediction,requires_grad = False)
                     
                     if self.use_cuda:
-                        b_ij.cuda()
+                        b_ij=b_ij.cuda()
                     
                     if self.collectData:
                         colledtion = []
