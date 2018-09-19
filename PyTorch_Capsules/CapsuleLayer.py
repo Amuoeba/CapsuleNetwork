@@ -64,6 +64,8 @@ class CapsuleLayer(nn.Module):
                     # print("X dim: {}".format(x.size()))
                     # print("W dim: {}".format(W.size()))                    
                     prediction = torch.matmul(W,x)
+                    if use_cuda:
+                        prediction.cuda()
                     # print("x: {}".format(x.size()))
                     # print("W: {}".format(W.size()))
                     # print("Prediction: {}".format(prediction.size()))
