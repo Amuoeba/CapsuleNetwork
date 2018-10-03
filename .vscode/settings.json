@@ -1,0 +1,9 @@
+{
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/CapsuleNetwork/small_NORB_data":true
+      },
+      "python.jediEnabled": false
+}

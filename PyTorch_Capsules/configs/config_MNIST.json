@@ -1,6 +1,7 @@
 {
    "type":{
        "laptop":{
+           "experiment_name":"MNIST_exp",
            "test_rotate":true,
            "cuda":false,
            "islice":10,
@@ -11,6 +12,7 @@
            
        },
        "cluster":{
+           "experiment_name":"MNIST_exp",
            "test_rotate":true,
            "cuda":true,
            "islice":null,

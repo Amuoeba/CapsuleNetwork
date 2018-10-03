@@ -1,10 +1,6 @@
 import torch
 from torchvision import datasets, transforms
 
-
-
-
-
 # Loading the MNIST data 
 class Mnist:
     """
@@ -33,5 +29,8 @@ class Mnist:
         else:
             test_dataset = datasets.MNIST('../data', train=False, download=True, transform=test_data_transform)
         
+        print("Train type:",type(train_dataset))
         self.train_loader  = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         self.test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+
+

@@ -7,14 +7,14 @@ import pickle
 from itertools import islice
 from torch.optim import Adam
 import numpy as np
-from CapsNetwork import CapsuleNet
+from Networks.MNISTCapsNetwork import CapsuleNet
 import utills
-from data_reader import Mnist
 import math
+from data_readers.mnist_reader import Mnist
 
 
 
-with open("./config.json") as json_data:
+with open("./configs/config_MNIST.json") as json_data:
     config = json.load(json_data)
 
 
@@ -27,9 +27,10 @@ no_epochs = config["epochs"]
 collection_step = config["collection step"]
 learning_rate = config["lr"]
 rotate = config["test_rotate"]
+exp_name =config["experiment_name"]
 
 # Data collection, image representations and plotting
-exp_env = utills.PrepareExperiment(1)
+exp_env = utills.PrepareExperiment(1,exp_name=exp_name)
 
 # Instanciating the network
 caps_net = CapsuleNet(use_cuda=CUDA)
@@ -62,7 +63,11 @@ for epoch in range(no_epochs):
             caps_net.set_collectData(False)
 
         image_batch = data[0]
-        target_batch = data[1]      
+        target_batch = data[1]
+        print("Target: {}".format(target_batch.size()))
+        print("Image: {}".format(image_batch.size()))
+        print("Image: \n")
+        print(image_batch)    
 
         lable = torch.eye(10).index_select(dim=0,index=target_batch)
 
@@ -76,7 +81,11 @@ for epoch in range(no_epochs):
         out, decoded, masked = caps_net(image_batch)
 
         loss = caps_net.loss(out,decoded,lable,image_batch)
+        # t0 = time.time()
         loss[0].backward()
+        # t1 = time.time()
+        # tdiff=t1-t0
+        # print("Time Backwards: {}".format(tdiff))
         optimizer.step()
 
 
@@ -86,13 +95,13 @@ for epoch in range(no_epochs):
         train_loss = train_loss + total_loss
         train_accuracy = sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size)
         
-        print("Epoch",epoch,"Batch:",batch_number)
-        # print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
-        # print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
-        print("Epoch loss:",train_loss)
-        print("Combined loss:",total_loss)
-        print("Margin loss:", margin_loss, "Reconstruction loss:", reconstruction_loss)
-        print("Train accuracy:", train_accuracy)
+        # print("Epoch",epoch,"Batch:",batch_number)
+        # # print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
+        # # print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
+        # print("Epoch loss:",train_loss)
+        # print("Combined loss:",total_loss)
+        # print("Margin loss:", margin_loss, "Reconstruction loss:", reconstruction_loss)
+        # print("Train accuracy:", train_accuracy)
 
         #save model if its combined loss is less than current minimum
         if total_loss < best_loss:
@@ -107,7 +116,7 @@ for epoch in range(no_epochs):
         exp_env.train_data = exp_env.train_data.append(cur_df)        
         
         if batch_number % collection_step == 0:
-            all_images = decoded.cpu().detach().numpy()
+            all_images = decoded.cpu().detach().numpy()            
             all_coupling_states =np.squeeze(np.array(caps_net.secondaryCapsules.collectedData),axis=0).swapaxes(0,1)
             # print("Shape #########:",all_coupling_states.shape)
             indices = utills.CollectedData.find_first_occurance_index(target_batch)
@@ -137,6 +146,7 @@ for epoch in range(no_epochs):
 total_test_loss = 0
 no_batches = 0
 total_accuracy = 0
+
 with torch.no_grad():
 
     caps_eval_model = CapsuleNet(use_cuda=CUDA)

@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 import pandas as pd
+import math
+import time
 
 
 
@@ -16,7 +18,7 @@ class CapsuleLayer(nn.Module):
         self.use_cuda = use_cuda
         self.collectData = False
         self.collectedData = []
-        # print("CUDA:",self.use_cuda)˝
+        self.routing=routing   
 
         #Check whether routing should be conducted or not
         if not routing:
@@ -32,11 +34,13 @@ class CapsuleLayer(nn.Module):
             #   - We stack the calculated tensors in dimension 1, which essentially means stacking scalar outputs of convolutions to produce 8 dimensional vector outputs
             #   - Transform the tensor so that we only have individual 8D capsules (32*6*6 = 1152) in each batch --> [batch,1152,8]
             def forward_no_route(self,x):
+                # print("XXXX size: ",x.size())
                 u = [capsule(x) for capsule in self.capsules]
-                print("U2 size:",u[0].size())
+                # print("U2 size:",u[0].size())
                 u = torch.stack(u,4)
-                print("U3 size:",u.size())
-                u = u.view(x.size(0),32*6*6,-1)
+                # print("U3 size:",u.size())
+                flat_num_caps = u.size(1) * u.size(2) * u.size(3)
+                u = u.view(x.size(0),flat_num_caps,-1)
 
                 assert u.size() == torch.Size([x.size(0),1152,8])
                 return self.squash(u)
@@ -46,11 +50,11 @@ class CapsuleLayer(nn.Module):
 
         elif routing:
             if routing_type == "Dinamic":
-                numPrevCaps = numPrevCaps
-                prevCapsDim = prevCapsDim
-                numNextCaps = numNextCaps
-                nextCapsDim = nextCapsDim
-
+                # numPrevCaps = numPrevCaps
+                # prevCapsDim = prevCapsDim
+                # numNextCaps = numNextCaps
+                # nextCapsDim = nextCapsDim
+                
                 self.W = nn.Parameter(torch.randn(1,numPrevCaps,numNextCaps,nextCapsDim,prevCapsDim))
                 self.biases = nn.Parameter(torch.zeros(1,1,numNextCaps,nextCapsDim,1))
                 #self.b_ij_learn = nn.Parameter(torch.zeros(batchSize,numPrevCaps,numNextCaps,1))
@@ -58,10 +62,10 @@ class CapsuleLayer(nn.Module):
 
                 def forward_route(self,x):                    
                     batchSize = x.size(0)
-                    print("X before: {}".format(x.size()))
+                    # print("X before: {}".format(x.size()))
                     x = torch.stack([x]*numNextCaps,dim=2).unsqueeze(4)
                     W = torch.cat([self.W] * batchSize,dim=0)
-                    print("X dim: {}".format(x.size()))
+                    # print("X dim: {}".format(x.size()))
                     # print("W dim: {}".format(W.size()))                    
                     prediction = torch.matmul(W,x)
                     # print("x: {}".format(x.size()))
@@ -85,11 +89,15 @@ class CapsuleLayer(nn.Module):
                         # print("C_ij Size: {}".format(c_ij.size()))
                         #c_ij = torch.cat([c_ij] * batchSize, dim=0).unsqueeze(4)
                         c_ij = torch.tensor(c_ij).unsqueeze(4)
-                        print("C_ij Size adter unsqueeze: {}".format(c_ij.size()))      
+                        # print("C_ij Size adter unsqueeze: {}".format(c_ij.size()))   
                         
                         if self.collectData:
                             c_analize = torch.tensor(c_ij.squeeze())
-                            c_analize = c_analize.view(batchSize,32,6,6,10)
+
+                            num_flattened_caps = c_analize.size(1)
+                            caps_spatial_frame = int(math.sqrt(num_flattened_caps/out_channels))
+
+                            c_analize = c_analize.view(batchSize,out_channels,caps_spatial_frame,caps_spatial_frame,numNextCaps)
                             c_analize = c_analize.permute(0,4,1,2,3)
                             c_analize = c_analize.cpu().detach().numpy()
                             #c_analize = np.reshape(c_analize,(batchSize,10,32,6,-1))
@@ -108,9 +116,10 @@ class CapsuleLayer(nn.Module):
                             # print(s_j)
 
                             v_j = self.squash(s_j)
-                            # print("V j: {}".format(v_j.size()))
+                            # print("V j: {}, NumPrevCaps: {}".format(v_j.size(),numPrevCaps))
                             # print("Prediction: {}".format(pred_nograd.size()))
                             # print("Prediction transpose: {}".format(pred_nograd.transpose(3,4).size()))
+                            
                             
                             a_ij = torch.matmul(pred_nograd.transpose(3,4),torch.cat([v_j] * numPrevCaps, dim = 1))
                             # print("A_ij: {}".format(a_ij.size()))
@@ -119,6 +128,7 @@ class CapsuleLayer(nn.Module):
                             a_ij = a_ij.squeeze(4)
                             # print("B ij size : {}".format(b_ij.size()))
                             b_ij = b_ij + a_ij
+
 
                         elif i == num_itterations -1:
                             s_j = (c_ij * prediction).sum(dim=1,keepdim=True) + self.biases
@@ -132,6 +142,7 @@ class CapsuleLayer(nn.Module):
 
 
                     out = v_j.squeeze(1)
+                    
                     return out       
 
                 self.forward_type = forward_route
@@ -139,7 +150,12 @@ class CapsuleLayer(nn.Module):
     
 
     def forward(self,x):
-        return self.forward_type(self,x)
+        # t0=time.time()
+        out = self.forward_type(self,x)
+        # t1 = time.time()
+        # tdiff = t1-t0
+        # print("Time: {},Type:{}".format(tdiff,self.routing))
+        return out
 
 
 

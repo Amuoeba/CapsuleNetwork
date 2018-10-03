@@ -7,6 +7,7 @@ import os
 import sys
 import itertools
 import torch
+from itertools import islice
 
 
 plt.switch_backend('agg')
@@ -23,7 +24,8 @@ class PrepareExperiment():
     
     """
 
-    def __init__(self, id, home=".",):
+    def __init__(self, id, home=".",exp_name="experiment"):
+        self.exp_name = exp_name
         self.id = id
         self.home=home        
         self.expHome = None
@@ -51,7 +53,7 @@ class PrepareExperiment():
         """
         This method prepares the foldier structure for the experiments
         """
-        dirname = self.unique_name(self.home + "/experiments/experiment",makedir=True)
+        dirname = self.unique_name(self.home + "/experiments/"+self.exp_name,makedir=True)
         img = dirname+"/images"
         img_reconst = "/reconstructions"
         img_coupling = "/coupling"
@@ -150,24 +152,19 @@ class PrepareExperiment():
 
     def save_best_model(self,model):
         model_name = "model_epch_"+str(model.epoch)+"_batch_"+str(model.batch)
-        torch.save(model.model,self.model_dest+model_name)
+        torch.save(model.model,self.model_dest+"best_model")
         self.best_model = model.model
 
         with open(self.model_dest+model_name+".txt","w+") as f:
-            f.write(model_name+"\n")
-            f.write(str(model.epoch)+"\n")
-            f.write(str(model.batch)+"\n")
+            f.write("Name: "+model_name+"\n")
+            f.write("Epoch: "+str(model.epoch)+"\n")
+            f.write("Batch: "+str(model.batch)+"\n")
             f.write("Total loss: {} \n".format(model.total_loss))
             f.write("Margin loss: {} \n".format(model.margin_loss))
             f.write("Reconstruction loss: {} \n".format(model.reconstruction_loss))
 
         return None
         
-
-    
-
-
-
 
 class ImagePlotter():
     """
@@ -182,7 +179,24 @@ class ImagePlotter():
         self.destination = destination
         self.current_reconst = 0
         self.current_coupling = 0
-        self.name = name    
+        self.name = name
+
+    @staticmethod
+    def plot_NORB_batch_examples(loader,no_ex,no_batch,location="./test.png"):
+        no_rows = no_ex
+        fig, axes = plt.subplots(nrows=no_batch, ncols=no_ex)
+        
+        for i_batch, sample_batched in islice(enumerate(loader),None,no_batch,None):
+            for j in range(no_ex):
+                #print("Tags: {}".format(sample_batched["tag"].numpy()))
+                lable = sample_batched["tag"].numpy().item(j)
+                axes[i_batch,j].imshow(sample_batched["image"].numpy()[j])
+                axes[i_batch,j].set_title(lable)
+        
+        plt.savefig(location)
+        plt.close("all")
+        
+
 
     def plot_reconstruction_images(self,images,save=False,name="default",subdest="",verbose=False):
         """
@@ -288,7 +302,6 @@ class ImagePlotter():
                     for k in np.arange(Y_min, Y_max):    
                         for l in np.arange(X_min, X_max):
                             da = pltData[c][l][k]
-
                             
                             x_start = l + l*loffset + c*spacing 
                             x_stop = l+1 + l*loffset + c*spacing
@@ -345,7 +358,6 @@ class CollectedData():
 
         for i in range(target.size):
             number = target[i]
-
             if number not in found_index:
                 found_index[number] = i
 

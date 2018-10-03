@@ -7,4 +7,5 @@
 /PyTorch_Capsules/Data
 /PyTorch_Capsules/.pylintrc
 /PyTorch_Capsules/experiments/*
+/small_NORB_data
 

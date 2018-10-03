@@ -1,9 +1,12 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ConvLayer import ConvLayer
-from CapsuleLayer import CapsuleLayer
-from DecoderLayer import DecoderLayer
+from .Layers.ConvLayer import ConvLayer
+from .Layers.CapsuleLayer import CapsuleLayer
+from .Layers.DecoderLayer import DecoderLayer
+
+
+
 
 # from main import CUDA
 
@@ -27,11 +30,15 @@ class CapsuleNet(nn.Module):
         Returns:
             Touple[0]: activity vector of last layer capsule
             Touple[1]: reconstruction of the image 
-            Touple[2]: a mask of that represents what digit was classified
+            Touple[2]: a mask that represents what digit was classified
         """
-             
-        out = self.secondaryCapsules(self.primeryCapsules(self.firstConv(data)))        
+        print("Data size: ",data.size())
+        
+        conv_out = self.firstConv(data)
+        prymary_caps_out = self.primeryCapsules(conv_out)
+        out = self.secondaryCapsules(prymary_caps_out)              
         decoded, masked = self.decoderLayer(out)
+
         return out,decoded,masked
 
     def loss(self,out,reconst,lable,data):
