@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f0a9fde8-5651-49ff-a1cd-cec554af5988" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorchTest/PyTorch Basic Tutorial.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorchTest/PyTorch Basic Tutorial.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/Networks/MNISTCapsNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/Networks/MNISTCapsNetwork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/Small_norb_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/Small_norb_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/test.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/utills.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/utills.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="794091072">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="4" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.3" value="2" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.opened" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="code-workspace" value="1" />
+          <entry key="py" value="297" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Python" value="297" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="code-workspace" value="2" />
+          <entry key="json" value="5" />
+          <entry key="py" value="9" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JSON" value="5" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="Python" value="9" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages" />
+    </session>
+    <session id="56885550">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.5" value="2" />
+          <entry key="project.opened" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages" />
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="dummy" value="13" />
+          <entry key="json" value="16" />
+          <entry key="py" value="700" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="json" value="2" />
+          <entry key="png" value="3" />
+          <entry key="py" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JSON" value="16" />
+          <entry key="PLAIN_TEXT" value="13" />
+          <entry key="Python" value="700" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Image" value="3" />
+          <entry key="JSON" value="2" />
+          <entry key="Python" value="4" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.75189394">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="299">
+                  <caret line="38" selection-start-line="38" selection-end-line="39" />
+                  <folding>
+                    <element signature="e#0#12#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="26">
+                  <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#41#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/data_readers/Small_norb_reader.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="5031">
+                  <caret line="401" column="38" selection-start-line="401" selection-start-column="38" selection-end-line="401" selection-end-column="38" />
+                  <folding>
+                    <element signature="e#0#13#0" expanded="true" />
+                    <marker date="1539350041439" expanded="true" signature="13715:13724" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="351">
+                  <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+                  <folding>
+                    <element signature="e#0#12#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="91">
+                  <caret line="13" column="146" selection-start-line="13" selection-start-column="146" selection-end-line="13" selection-end-column="146" />
+                  <folding>
+                    <element signature="e#0#12#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="221">
+                  <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="91">
+                  <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/workspace_conf.code-workspace" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/main.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/utills.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/data_readers/mnist_reader.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/data_readers/Small_norb_reader.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py" />
+        <option value="$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1930" />
+    <option name="width" value="1910" />
+    <option name="height" value="1053" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+              <item name="PyTorch_Capsules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+              <item name="PyTorch_Capsules" type="462c0819:PsiDirectoryNode" />
+              <item name="configs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+              <item name="PyTorch_Capsules" type="462c0819:PsiDirectoryNode" />
+              <item name="data_readers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+              <item name="PyTorch_Capsules" type="462c0819:PsiDirectoryNode" />
+              <item name="Networks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+              <item name="PyTorch_Capsules" type="462c0819:PsiDirectoryNode" />
+              <item name="Networks" type="462c0819:PsiDirectoryNode" />
+              <item name="Layers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CapsuleNetwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CapsuleNetwork" type="462c0819:PsiDirectoryNode" />
+              <item name="PyTorch_Capsules" type="462c0819:PsiDirectoryNode" />
+              <item name="RunHistory" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="CapsuleNetwork" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyTorch_Capsules" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PyTorch_Capsules/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f0a9fde8-5651-49ff-a1cd-cec554af5988" name="Default Changelist" comment="" />
+      <created>1538637820381</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1538637820381</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1920" y="0" width="1920" height="1056" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16587678" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32977587" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32977587" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" x="629" y="95" width="1257" height="660" id="Terminal" order="8" visible="true" weight="0.18569905" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32977587" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace_conf.code-workspace">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/experiments/NORB_exp_21/plots/accuracy_plot.png" />
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/test.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/utills.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-34">
+          <caret line="166" column="8" selection-start-line="166" selection-start-column="8" selection-end-line="166" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="84" column="29" selection-start-line="84" selection-start-column="29" selection-end-line="84" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/data_readers/mnist_reader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="21" column="53" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/data_readers/Small_norb_reader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5031">
+          <caret line="401" column="38" selection-start-line="401" selection-start-column="38" selection-end-line="401" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <marker date="1539350041439" expanded="true" signature="13715:13724" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="13" column="146" selection-start-line="13" selection-start-column="146" selection-end-line="13" selection-end-column="146" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="38" selection-start-line="38" selection-end-line="39" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

@@ -7,7 +7,6 @@ from .Layers.DecoderLayer import DecoderLayer
 
 
 
-
 # from main import CUDA
 
 

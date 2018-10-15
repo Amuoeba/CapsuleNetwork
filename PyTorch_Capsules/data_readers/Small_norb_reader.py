@@ -9,7 +9,7 @@ from os.path import exists
 from itertools import groupby
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
-from .preprocess_utills import NORB_ToTensor
+from .preprocess_utills import NORBtransform
 import os, os.path
 from itertools import islice
 import pickle
@@ -387,9 +387,9 @@ class myNORBreader(Dataset):
     
     def __len__(self):
         no_files = next(os.walk(self.foldier))[2]
-        return(len(no_files))
+        return len(no_files)
     
-    def __getitem__(self,idx):
+    def __getitem__(self, idx):
         path = self.foldier+self.file_base_name+str(idx)
         with open(path,"rb") as f:
             data_point = pickle.load(f)
@@ -397,18 +397,14 @@ class myNORBreader(Dataset):
             if self.transform:
                 image, lable = sample["image"], sample["tag"]
                 trans = transforms.Compose([
-                    NORB_ToTensor()
+                    NORBtransform(),
                 ])
-                print("Image size {}".format(image.shape))
-                print("Lable size {}".format(lable.shape))
                 sample = trans(sample)
-                print("In transform image shape {}, Lable type {}".format(sample["image"].shape,type(sample["tag"])))
-                
                 
                 
         return(sample)
 
 class myNORBloader(DataLoader):
-    def __init__(self,dataset,*args,**kwargs):
-        super().__init__(dataset,*args,**kwargs)
-        self.categories = {"animal":0,"human":1,"airplane":2,"truck":3,"car":4}
+    def __init__(self, dataset, *args, **kwargs):
+        super().__init__(dataset, *args, **kwargs)
+        self.categories = {"animal": 0, "human": 1, "airplane": 2, "truck": 3, "car": 4}

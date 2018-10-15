@@ -14,6 +14,7 @@ from data_readers.mnist_reader import Mnist
 
 
 
+
 with open("./configs/config_MNIST.json") as json_data:
     config = json.load(json_data)
 
@@ -28,11 +29,12 @@ collection_step = config["collection step"]
 learning_rate = config["lr"]
 rotate = config["test_rotate"]
 exp_name =config["experiment_name"]
+collect = config["collect"]
 
 # Data collection, image representations and plotting
 exp_env = utills.PrepareExperiment(1,exp_name=exp_name)
 
-# Instanciating the network
+# Instantiating the network
 caps_net = CapsuleNet(use_cuda=CUDA)
 print(caps_net)
 if CUDA:
@@ -40,10 +42,10 @@ if CUDA:
 
 model_parameters = filter(lambda p: p.requires_grad, caps_net.parameters())
 params = sum([np.prod(p.size()) for p in model_parameters])
-print("No. parameters: ",params)
+print("No. parameters: ", params)
 
 # Instantiating the train loader
-mnist = Mnist(batch_size,rotate)
+mnist = Mnist(batch_size, rotate)
 
 # instantiate the optimizer
 optimizer = Adam(caps_net.parameters(),lr=learning_rate)
@@ -54,22 +56,26 @@ best_loss = math.inf
 
 for epoch in range(no_epochs):    
     train_loss = 0
-    print("Epoch:",epoch)
+    print("Epoch:", epoch)
 
     for batch_number, data in islice(enumerate(mnist.train_loader),None,islice_range,None):
-        if batch_number % collection_step == 0:
+        if batch_number % collection_step == 0 and collect:
             caps_net.set_collectData(True)
         else:
             caps_net.set_collectData(False)
 
         image_batch = data[0]
         target_batch = data[1]
-        print("Target: {}".format(target_batch.size()))
-        print("Image: {}".format(image_batch.size()))
-        print("Image: \n")
-        print(image_batch)    
 
-        lable = torch.eye(10).index_select(dim=0,index=target_batch)
+        # print("Image batch", type(image_batch))
+        # print("Target batch", type(target_batch))
+
+        # print("Target: {}".format(target_batch.size()))
+        # print("Image: {}".format(image_batch.size()))
+        # print("Image: \n")
+        # print(image_batch)    
+
+        lable = torch.eye(10).index_select(dim=0, index=target_batch)
 
 
         if CUDA:
@@ -95,13 +101,13 @@ for epoch in range(no_epochs):
         train_loss = train_loss + total_loss
         train_accuracy = sum(np.argmax(masked.data.cpu().numpy(), 1) == np.argmax(lable.data.cpu().numpy(), 1)) / float(batch_size)
         
-        # print("Epoch",epoch,"Batch:",batch_number)
-        # # print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
-        # # print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
-        # print("Epoch loss:",train_loss)
-        # print("Combined loss:",total_loss)
-        # print("Margin loss:", margin_loss, "Reconstruction loss:", reconstruction_loss)
-        # print("Train accuracy:", train_accuracy)
+        print("Epoch",epoch,"Batch:",batch_number)
+        # print("Pred:",np.argmax(masked.data.cpu().numpy(),1))
+        # print("Targ:",np.argmax(lable.data.cpu().numpy(), 1))
+        print("Epoch loss:",train_loss)
+        print("Combined loss:",total_loss)
+        print("Margin loss:", margin_loss, "Reconstruction loss:", reconstruction_loss)
+        print("Train accuracy:", train_accuracy)
 
         #save model if its combined loss is less than current minimum
         if total_loss < best_loss:
@@ -115,7 +121,7 @@ for epoch in range(no_epochs):
         cur_df = pd.DataFrame({"epoch":[int(epoch)],"batch":[int(batch_number)],"margin-loss":[margin_loss],"reconstruction-loss":[reconstruction_loss],"total-loss":[total_loss],"accuracy":[train_accuracy]})
         exp_env.train_data = exp_env.train_data.append(cur_df)        
         
-        if batch_number % collection_step == 0:
+        if batch_number % collection_step == 0 and collect:
             all_images = decoded.cpu().detach().numpy()            
             all_coupling_states =np.squeeze(np.array(caps_net.secondaryCapsules.collectedData),axis=0).swapaxes(0,1)
             # print("Shape #########:",all_coupling_states.shape)

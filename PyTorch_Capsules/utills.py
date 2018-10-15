@@ -182,16 +182,16 @@ class ImagePlotter():
         self.name = name
 
     @staticmethod
-    def plot_NORB_batch_examples(loader,no_ex,no_batch,location="./test.png"):
+    def plot_NORB_batch_examples(loader, no_ex, no_batch, location="./test.png"):
         no_rows = no_ex
         fig, axes = plt.subplots(nrows=no_batch, ncols=no_ex)
         
-        for i_batch, sample_batched in islice(enumerate(loader),None,no_batch,None):
+        for i_batch, sample_batched in islice(enumerate(loader), None, no_batch, None):
             for j in range(no_ex):
                 #print("Tags: {}".format(sample_batched["tag"].numpy()))
                 lable = sample_batched["tag"].numpy().item(j)
-                axes[i_batch,j].imshow(sample_batched["image"].numpy()[j])
-                axes[i_batch,j].set_title(lable)
+                axes[i_batch, j].imshow(sample_batched["image"].numpy()[j])
+                axes[i_batch, j].set_title(lable)
         
         plt.savefig(location)
         plt.close("all")
