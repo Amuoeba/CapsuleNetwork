@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0a9fde8-5651-49ff-a1cd-cec554af5988" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorchTest/PyTorch Basic Tutorial.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorchTest/PyTorch Basic Tutorial.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/Networks/MNISTCapsNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/Networks/MNISTCapsNetwork.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/Small_norb_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/Small_norb_reader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/test.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch_Capsules/utills.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyTorch_Capsules/utills.py" afterDir="false" />
-    </list>
+    <list default="true" id="f0a9fde8-5651-49ff-a1cd-cec554af5988" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,11 +50,11 @@
     <session id="56885550">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="2" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -109,7 +95,7 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="299">
+                <state relative-caret-position="-247">
                   <caret line="38" selection-start-line="38" selection-end-line="39" />
                   <folding>
                     <element signature="e#0#12#0" expanded="true" />
@@ -146,7 +132,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="351">
+                <state relative-caret-position="286">
                   <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
                   <folding>
                     <element signature="e#0#12#0" expanded="true" />
@@ -222,6 +208,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -274,7 +261,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -394,6 +380,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-247">
+          <caret line="38" selection-start-line="38" selection-end-line="39" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/data_readers/preprocess_utills.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
@@ -415,6 +411,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/Layers/CapsuleLayer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="91">
@@ -425,37 +431,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/Networks/NORBcapsNet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/NORBmain.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="38" selection-start-line="38" selection-end-line="39" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/configs/config_NORB.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PyTorch_Capsules/configs/config_MNIST.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
         </state>
       </provider>
     </entry>
